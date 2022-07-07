@@ -1,40 +1,39 @@
 services:
 
-  postgres:
-    container_name: postgres
+  gameder-postgres:
+    container_name: gameder-postgres
     image: postgres
     environment:
-      POSTGRES_USER: microservices
+      POSTGRES_USER: gameder
       POSTGRES_PASSWORD: password
-      PGDATA: /data/postgres
+      PGDATA: /data/gameder
     volumes:
-      - postgres:/data/postgres
+      - gameder-postgres:/data/gameder
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - gameder-postgres
     restart: unless-stopped
 
-  pgadmin:
-    container_name: pgadmin
+  gameder-pgadmin:
+    container_name: gameder-pgadmin
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
-      - pgadmin:/var/lib/pgadmin
+      - gameder-pgadmin:/var/lib/pgadmin
     ports:
       - "5050:80"
     networks:
-      - postgres
+      - gameder-postgres
     restart: unless-stopped
+
 networks:
-  postgres:
+  gameder-postgres:
     driver: bridge
-#  spring:
-#    driver: bridge
 
 volumes:
-  postgres:
-  pgadmin:
+  gameder-postgres:
+  gameder-pgadmin:
