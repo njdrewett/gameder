@@ -9,7 +9,7 @@ public interface GamerController {
 
     ResponseEntity<GetGamerResponse> retrieveGamer(final String gamerId);
 
-    ResponseEntity<UpdateGamerResponse> updateGamer(final UpdateGamerRequest updateCustomerRequest);
+    ResponseEntity<UpdateGamerResponse> updateGamer(final UpdateGamerRequest updateGamerRequest);
 
     void archiveGamer(String gamerId) ;
 }

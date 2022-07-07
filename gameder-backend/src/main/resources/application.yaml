@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: gameder
+
+  datasource:
+    username: 'gameder'
+    url: jdbc:postgresql://localhost:5432/gameder
+    password: 'password'
+    initialization-mode: 'always'
+  jpa:
+    generate-ddl: 'true'
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: 'update'
+    show-sql: 'true'

@@ -9,6 +9,9 @@ public class UpdateGamerRequest {
     private String displayName;
     private Date dateOfBirth;
 
+    public UpdateGamerRequest() {
+    }
+
     public UpdateGamerRequest(String id, String displayName, Date dateOfBirth) {
         this.id = id;
         this.displayName = displayName;

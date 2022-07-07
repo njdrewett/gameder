@@ -7,6 +7,9 @@ public class CreateGamerResponse {
     private String id;
     private boolean success;
 
+    public CreateGamerResponse() {
+    }
+
     public CreateGamerResponse(final String id, final boolean success) {
         this.id = id;
         this.success = success;

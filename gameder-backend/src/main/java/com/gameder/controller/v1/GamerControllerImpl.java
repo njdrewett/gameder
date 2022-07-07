@@ -57,16 +57,16 @@ public class GamerControllerImpl implements GamerController {
         final UpdateGamerResponse updateGamerResponse = new UpdateGamerResponse(gamerResponse.getId(), true);
 
         log.info("updateGamer {}", updateGamerResponse);
-        return new ResponseEntity<UpdateGamerResponse>(updateGamerResponse, HttpStatus.OK);
+        return new ResponseEntity<>(updateGamerResponse, HttpStatus.OK);
     }
 
     @DeleteMapping(path="{gamerId}")
     public void archiveGamer(@PathVariable("gamerId") String gamerId) {
-        log.info("deleteCustomer {} ", gamerId);
+        log.info("archiveGamer {} ", gamerId);
 
         gamerService.archiveGamer(gamerId);
 
-        log.info("Delete customer ");
+        log.info("archiveGamer  ");
     }
 
 

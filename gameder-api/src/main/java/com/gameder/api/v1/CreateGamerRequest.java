@@ -8,6 +8,9 @@ public class CreateGamerRequest {
     private String displayName;
     private Date dateOfBirth;
 
+    public CreateGamerRequest() {
+    }
+
     public CreateGamerRequest(final String displayName, final Date dateOfBirth) {
         this.displayName = displayName;
         this.dateOfBirth = dateOfBirth;
