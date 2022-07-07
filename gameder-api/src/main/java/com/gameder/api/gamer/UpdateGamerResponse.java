@@ -1,4 +1,4 @@
-package com.gameder.api.v1;
+package com.gameder.api.gamer;
 
 import java.util.Objects;
 

@@ -1,9 +1,9 @@
-package com.gameder.controller.v1;
+package com.gameder.controller.gamer;
 
 import com.gameder.api.Gamer;
-import com.gameder.api.v1.CreateGamerRequest;
-import com.gameder.api.v1.GetGamerResponse;
-import com.gameder.api.v1.UpdateGamerRequest;
+import com.gameder.api.gamer.CreateGamerRequest;
+import com.gameder.api.gamer.RetrieveGamerResponse;
+import com.gameder.api.gamer.UpdateGamerRequest;
 
 public class GamerConverter {
 
@@ -15,8 +15,8 @@ public class GamerConverter {
         return new Gamer(updateGamerRequest.getId(), updateGamerRequest.getDisplayName(), updateGamerRequest.getDateOfBirth());
     }
 
-    public static GetGamerResponse toGetGamerResponse(final Gamer gamer) {
-        return new GetGamerResponse(gamer.getId(), gamer.getDisplayName(), gamer.getDateOfBirth());
+    public static RetrieveGamerResponse toRetrieveGamerResponse(final Gamer gamer) {
+        return new RetrieveGamerResponse(gamer.getId(), gamer.getDisplayName(), gamer.getDateOfBirth());
     }
 
 }

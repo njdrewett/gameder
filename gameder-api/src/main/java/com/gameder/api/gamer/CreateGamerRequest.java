@@ -1,31 +1,19 @@
-package com.gameder.api.v1;
+package com.gameder.api.gamer;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class GetGamerResponse {
-
-    private String id;
-
-    public GetGamerResponse() {
-        super();
-
-    }
-    public GetGamerResponse(String id, String displayName, Date dateOfBirth) {
-        this.id = id;
-        this.displayName = displayName;
-        this.dateOfBirth = dateOfBirth;
-    }
+public class CreateGamerRequest {
 
     private String displayName;
     private Date dateOfBirth;
 
-    public String getId() {
-        return id;
+    public CreateGamerRequest() {
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public CreateGamerRequest(final String displayName, final Date dateOfBirth) {
+        this.displayName = displayName;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getDisplayName() {
@@ -44,11 +32,9 @@ public class GetGamerResponse {
         this.dateOfBirth = dateOfBirth;
     }
 
-
     @Override
     public String toString() {
         return "CreateCustomerRequest{" +
-                "id='"+ id + "'" +
                 ", displayName='" + displayName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 '}';
@@ -58,14 +44,13 @@ public class GetGamerResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GetGamerResponse that = (GetGamerResponse) o;
-        return id.equals(that.id) && displayName.equals(that.displayName) && dateOfBirth.equals(that.dateOfBirth);
+        CreateGamerRequest that = (CreateGamerRequest) o;
+        return displayName.equals(that.displayName) && dateOfBirth.equals(that.dateOfBirth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, displayName, dateOfBirth);
+        return Objects.hash(displayName, dateOfBirth);
     }
-
 
 }

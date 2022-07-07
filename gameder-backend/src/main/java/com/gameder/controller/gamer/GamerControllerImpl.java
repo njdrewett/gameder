@@ -1,7 +1,7 @@
-package com.gameder.controller.v1;
+package com.gameder.controller.gamer;
 
 import com.gameder.api.Gamer;
-import com.gameder.api.v1.*;
+import com.gameder.api.gamer.*;
 import com.gameder.service.GamerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "api/v1/gamer")
+@RequestMapping(path = "api/gamer")
 public class GamerControllerImpl implements GamerController {
 
     private static final Logger log = LoggerFactory.getLogger(GamerControllerImpl.class);
@@ -38,14 +38,14 @@ public class GamerControllerImpl implements GamerController {
     }
 
     @GetMapping(path="{gamerId}")
-    public ResponseEntity<GetGamerResponse> retrieveGamer(@PathVariable("gamerId") String gamerId) {
+    public ResponseEntity<RetrieveGamerResponse> retrieveGamer(@PathVariable("gamerId") String gamerId) {
         log.info("retrieveGamer {} ", gamerId);
 
         final Gamer gamer = gamerService.retrieveGamer(gamerId);
-        final GetGamerResponse getGamerResponse = GamerConverter.toGetGamerResponse(gamer);
+        final RetrieveGamerResponse retrieveGamerResponse = GamerConverter.toRetrieveGamerResponse(gamer);
 
-        log.info("retrieveGamer {}" , getGamerResponse);
-        return new ResponseEntity<>(getGamerResponse, HttpStatus.OK);
+        log.info("retrieveGamer {}" , retrieveGamerResponse);
+        return new ResponseEntity<>(retrieveGamerResponse, HttpStatus.OK);
     }
 
     @PostMapping(path="/update")
@@ -68,6 +68,4 @@ public class GamerControllerImpl implements GamerController {
 
         log.info("archiveGamer  ");
     }
-
-
 }
