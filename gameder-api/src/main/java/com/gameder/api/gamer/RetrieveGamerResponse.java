@@ -9,16 +9,59 @@ public class RetrieveGamerResponse {
     private String displayName;
     private Date dateOfBirth;
 
+    private String emailAddress;
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public byte[] getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getIntroductionText() {
+        return introductionText;
+    }
+
+    public void setIntroductionText(String introductionText) {
+        this.introductionText = introductionText;
+    }
+
+    private String telephoneNumber;
+    private byte[] profileImage;
+    private String introductionText;
+
+    public RetrieveGamerResponse(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImage, String introductionText) {
+        this.id = id;
+        this.displayName = displayName;
+        this.dateOfBirth = dateOfBirth;
+        this.emailAddress = emailAddress;
+        this.telephoneNumber = telephoneNumber;
+        this.profileImage = profileImage;
+        this.introductionText = introductionText;
+    }
+
+
     public RetrieveGamerResponse() {
         super();
 
     }
-    public RetrieveGamerResponse(String id, String displayName, Date dateOfBirth) {
-        this.id = id;
-        this.displayName = displayName;
-        this.dateOfBirth = dateOfBirth;
-    }
-
 
     public String getId() {
         return id;

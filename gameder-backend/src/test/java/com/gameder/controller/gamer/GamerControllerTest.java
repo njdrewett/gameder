@@ -40,10 +40,12 @@ public class GamerControllerTest {
     public void testCreateGamer() {
         log.info("testCreateGamer");
 
-        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L));
+        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
         Mockito.when(gamerService.createGamer(Mockito.any(Gamer.class))).thenReturn(gamer);
 
-        final CreateGamerRequest createGamerRequest = new CreateGamerRequest("NewGamer", new Date(1656366879731L));
+        final CreateGamerRequest createGamerRequest = new CreateGamerRequest("NewGamer", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
         final ResponseEntity<CreateGamerResponse> returnedGamer = gamerController.createGamer(createGamerRequest);
 
         final CreateGamerResponse body = returnedGamer.getBody();
@@ -57,10 +59,13 @@ public class GamerControllerTest {
     public void testUpdateGamer() {
         log.info("testUpdateGamer");
 
-        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L));
+        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
         Mockito.when(gamerService.updateGamer(Mockito.any(Gamer.class))).thenReturn(gamer);
 
-        final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("1", "NewGamer", new Date(1656366879731L));
+        final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("1", "NewGamer",
+                new Date(1656366879731L),"gamer@gamers.com", "019191999991911",
+                null, "Hi Im a gamer");
         final ResponseEntity<UpdateGamerResponse> returnedGamer = gamerController.updateGamer(updateGamerRequest);
 
         final UpdateGamerResponse body = returnedGamer.getBody();
@@ -74,10 +79,12 @@ public class GamerControllerTest {
     public void testUpdateGamerNotExists() {
         log.info("testUpdateGamerNotExists");
 
-        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L));
+        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
         Mockito.when(gamerService.updateGamer(Mockito.any(Gamer.class))).thenReturn(gamer);
 
-        final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("2", "NewGamer", new Date(1656366879731L));
+        final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("2", "NewGamer", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
         final ResponseEntity<UpdateGamerResponse> returnedGamer = gamerController.updateGamer(updateGamerRequest);
 
         final UpdateGamerResponse body = returnedGamer.getBody();
@@ -91,7 +98,9 @@ public class GamerControllerTest {
     public void testRetrieveGamer() {
         log.info("testRetrieveGamer");
 
-        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L));
+        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null,
+                "Hi Im a gamer");
 
         Mockito.when(gamerService.retrieveGamer("1")).thenReturn(gamer);
 

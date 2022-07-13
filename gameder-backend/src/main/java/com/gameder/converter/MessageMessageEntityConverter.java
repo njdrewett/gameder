@@ -6,7 +6,8 @@ import com.gameder.domain.MessageEntity;
 public class MessageMessageEntityConverter {
 
     public static Message toMessage(final MessageEntity messageEntity) {
-        return new Message(messageEntity.getId(), messageEntity.getMessageText(),messageEntity.getCreationDate());
+        return new Message(messageEntity.getId(), messageEntity.getMessageText(),messageEntity.getCreationDate(),
+                messageEntity.getLastUpdatedDate(), messageEntity.getFromUserId(), messageEntity.getToUserId());
     }
 
     public static MessageEntity toMessageEntity(final Message message) {
@@ -17,6 +18,9 @@ public class MessageMessageEntityConverter {
         messageEntity.setId(message.getId());
         messageEntity.setMessageText(message.getMessageText());
         messageEntity.setCreationDate(message.getCreationDate());
+        messageEntity.setLastUpdatedDate(message.getLastUpdatedDate());
+        messageEntity.setFromUserId(message.getFromUserId());
+        messageEntity.setToUserId(message.getToUserId());
         return messageEntity;
     }
 

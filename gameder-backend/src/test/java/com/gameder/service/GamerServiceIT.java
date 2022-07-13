@@ -34,14 +34,18 @@ public class GamerServiceIT {
     }
 
     private Gamer createGamer() {
-        final Gamer gamer = new Gamer(null,"NewGamer", new Date(1656366879731L));
+        final Gamer gamer = new Gamer(null,"NewGamer", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
 
         final Gamer returnedGamer = gamerService.createGamer(gamer);
 
         assertNotNull(returnedGamer.getId());
-        assertEquals(returnedGamer.getId(), returnedGamer.getId());
-        assertEquals(returnedGamer.getDateOfBirth(), returnedGamer.getDateOfBirth());
-        assertEquals(returnedGamer.getDisplayName(), returnedGamer.getDisplayName());
+        assertEquals(returnedGamer.getDateOfBirth(), gamer.getDateOfBirth());
+        assertEquals(returnedGamer.getDisplayName(), gamer.getDisplayName());
+        assertEquals(returnedGamer.getEmailAddress(), gamer.getEmailAddress());
+        assertEquals(returnedGamer.getIntroductionText(), gamer.getIntroductionText());
+        assertEquals(returnedGamer.getTelephoneNumber(), gamer.getTelephoneNumber());
+
         return returnedGamer;
     }
 
@@ -51,14 +55,18 @@ public class GamerServiceIT {
 
         final Gamer createdGamer = createGamer();
 
-        final Gamer gamer = new Gamer(createdGamer.getId(),"NewGamerUpdated", new Date(1656366879731L));
+        final Gamer gamer = new Gamer(createdGamer.getId(),"NewGamerUpdated", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
 
         final Gamer returnedGamer = gamerService.updateGamer(gamer);
 
         assertNotNull(returnedGamer.getId());
-        assertEquals(returnedGamer.getId(), returnedGamer.getId());
-        assertEquals(returnedGamer.getDateOfBirth(), returnedGamer.getDateOfBirth());
-        assertEquals(returnedGamer.getDisplayName(), returnedGamer.getDisplayName());
+        assertEquals(returnedGamer.getId(), gamer.getId());
+        assertEquals(returnedGamer.getDateOfBirth(), gamer.getDateOfBirth());
+        assertEquals(returnedGamer.getDisplayName(), gamer.getDisplayName());
+        assertEquals(returnedGamer.getEmailAddress(), gamer.getEmailAddress());
+        assertEquals(returnedGamer.getIntroductionText(), gamer.getIntroductionText());
+        assertEquals(returnedGamer.getTelephoneNumber(), gamer.getTelephoneNumber());
 
         log.info("testUpdateGamer {}", returnedGamer);
     }
@@ -67,7 +75,8 @@ public class GamerServiceIT {
     public void testUpdateGamerNotExists() {
         log.info("testUpdateGamer");
 
-        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L));
+        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
 
         try {
             gamerService.updateGamer(gamer);

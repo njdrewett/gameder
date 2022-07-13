@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 @Service
 public class GamerServiceImpl extends GamerServiceBase {
@@ -22,6 +23,7 @@ public class GamerServiceImpl extends GamerServiceBase {
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public Gamer createGamer(final Gamer gamer) {
         log.info("Entering createGamer: {}",gamer);
 
@@ -37,6 +39,7 @@ public class GamerServiceImpl extends GamerServiceBase {
     }
 
     @Override
+    @Transactional(Transactional.TxType.NOT_SUPPORTED)
     public Gamer retrieveGamer(String identifier) {
         log.info("Entering retrieveGamer: {}",identifier);
 
@@ -50,6 +53,7 @@ public class GamerServiceImpl extends GamerServiceBase {
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public Gamer updateGamer(final Gamer gamer) {
         log.info("Entering updateGamer: {}",gamer);
 
@@ -67,6 +71,7 @@ public class GamerServiceImpl extends GamerServiceBase {
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public void archiveGamer(String identifier) {
         log.info("Entering archiveGamer: {}",identifier);
 
@@ -76,6 +81,6 @@ public class GamerServiceImpl extends GamerServiceBase {
 
         getGamerRepository().save(foundGamerEntity);
 
-        log.info("Exiting archiveGamer: {}" );
+        log.info("Exiting archiveGame" );
     }
 }

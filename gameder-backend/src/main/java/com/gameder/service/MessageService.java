@@ -1,7 +1,6 @@
 package com.gameder.service;
 
 
-import com.gameder.api.Gamer;
 import com.gameder.api.Message;
 
 public interface MessageService {

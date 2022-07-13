@@ -42,7 +42,8 @@ public class GamerServiceTest {
    public void testCreateGamer() {
       log.info("testCreateGamer");
 
-      final Gamer gamer = new Gamer(null,"NewGamer", new Date(1656366879731L));
+      final Gamer gamer = new Gamer(null,"NewGamer", new Date(1656366879731L),
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
 
       final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
 
@@ -54,6 +55,9 @@ public class GamerServiceTest {
       assertEquals(returnedGamer.getId(), persistedGamerEntity.getId());
       assertEquals(returnedGamer.getDateOfBirth(), persistedGamerEntity.getDateOfBirth());
       assertEquals(returnedGamer.getDisplayName(), persistedGamerEntity.getDisplayName());
+      assertEquals(returnedGamer.getEmailAddress(), gamer.getEmailAddress());
+      assertEquals(returnedGamer.getIntroductionText(), gamer.getIntroductionText());
+      assertEquals(returnedGamer.getTelephoneNumber(), gamer.getTelephoneNumber());
 
       log.info("testCreateGamerResponse {}", returnedGamer );
    }
@@ -62,7 +66,7 @@ public class GamerServiceTest {
    public void testUpdateGamer() {
       log.info("testUpdateGamer");
 
-      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L));
+      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),"gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
 
       final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
 
@@ -75,6 +79,9 @@ public class GamerServiceTest {
       assertEquals(returnedGamer.getId(), persistedGamerEntity.getId());
       assertEquals(returnedGamer.getDateOfBirth(), persistedGamerEntity.getDateOfBirth());
       assertEquals(returnedGamer.getDisplayName(), persistedGamerEntity.getDisplayName());
+      assertEquals(returnedGamer.getEmailAddress(), persistedGamerEntity.getEmailAddress());
+      assertEquals(returnedGamer.getIntroductionText(), persistedGamerEntity.getIntroductionText());
+      assertEquals(returnedGamer.getTelephoneNumber(), persistedGamerEntity.getTelephoneNumber());
 
       log.info("testUpdateGamer {}", returnedGamer);
    }
@@ -83,7 +90,8 @@ public class GamerServiceTest {
    public void testUpdateGamerNotExists() {
       log.info("testUpdateGamer");
 
-      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L));
+      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
 
       Mockito.when(gamerRepository.findById(gamer.getId())).thenReturn(Optional.empty());
 
@@ -103,7 +111,8 @@ public class GamerServiceTest {
    public void testRetrieveGamer() {
       log.info("testRetrieveGamer");
 
-      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L));
+      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
 
       final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
 
@@ -112,6 +121,13 @@ public class GamerServiceTest {
       final Gamer returnedGamer = gamerService.retrieveGamer("1");
 
       assertNotNull(returnedGamer.getId());
+      assertNotNull(returnedGamer.getId());
+      assertEquals(returnedGamer.getId(), persistedGamerEntity.getId());
+      assertEquals(returnedGamer.getDateOfBirth(), persistedGamerEntity.getDateOfBirth());
+      assertEquals(returnedGamer.getDisplayName(), persistedGamerEntity.getDisplayName());
+      assertEquals(returnedGamer.getEmailAddress(), persistedGamerEntity.getEmailAddress());
+      assertEquals(returnedGamer.getIntroductionText(), persistedGamerEntity.getIntroductionText());
+      assertEquals(returnedGamer.getTelephoneNumber(), persistedGamerEntity.getTelephoneNumber());
 
       log.info("testRetrieveGamer {}", returnedGamer);
    }
@@ -138,7 +154,8 @@ public class GamerServiceTest {
    public void testArchiveGamer() {
       log.info("testArchiveGamer");
 
-      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L));
+      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
       final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
 
       Mockito.when(gamerRepository.findById("1")).thenReturn(Optional.of(persistedGamerEntity));
@@ -168,10 +185,14 @@ public class GamerServiceTest {
 
 
    private GamerEntity persistedGamerEntity(final Gamer gamer) {
-      GamerEntity gamerEntity = new GamerEntity();
+      final GamerEntity gamerEntity = new GamerEntity();
       gamerEntity.setId("1");
       gamerEntity.setDateOfBirth(gamer.getDateOfBirth());
       gamerEntity.setDisplayName(gamer.getDisplayName());
+      gamerEntity.setEmailAddress(gamer.getEmailAddress());
+      gamerEntity.setIntroductionText(gamer.getIntroductionText());
+      gamerEntity.setTelephoneNumber(gamer.getTelephoneNumber());
+
       return gamerEntity;
    }
 }

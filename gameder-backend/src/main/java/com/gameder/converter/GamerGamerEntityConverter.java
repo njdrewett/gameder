@@ -6,7 +6,8 @@ import com.gameder.domain.GamerEntity;
 public class GamerGamerEntityConverter {
 
     public static Gamer toGamer(final GamerEntity gamerEntity) {
-        return new Gamer(gamerEntity.getId(), gamerEntity.getDisplayName(),gamerEntity.getDateOfBirth());
+        return new Gamer(gamerEntity.getId(), gamerEntity.getDisplayName(),gamerEntity.getDateOfBirth(),
+                gamerEntity.getEmailAddress(),gamerEntity.getTelephoneNumber(),gamerEntity.getProfileImage(),gamerEntity.getIntroductionText());
     }
 
     public static GamerEntity toGamerEntity(final Gamer gamer) {
@@ -17,6 +18,11 @@ public class GamerGamerEntityConverter {
         gamerEntity.setId(gamer.getId());
         gamerEntity.setDateOfBirth(gamer.getDateOfBirth());
         gamerEntity.setDisplayName(gamer.getDisplayName());
+        gamerEntity.setEmailAddress(gamer.getEmailAddress());
+        gamerEntity.setIntroductionText(gamer.getIntroductionText());
+        gamerEntity.setProfileImage(gamer.getProfileImage());
+        gamerEntity.setTelephoneNumber(gamer.getTelephoneNumber());
+
         return gamerEntity;
     }
 

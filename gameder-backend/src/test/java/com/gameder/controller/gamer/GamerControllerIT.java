@@ -32,13 +32,15 @@ public class GamerControllerIT {
         log.info("testCreateGamer");
 
         final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
-//        assertEquals(body.getId(), gamer.getId());
+        assertNotNull(returnedGamer.getBody().getId());
+        assertTrue(returnedGamer.getBody().getSuccess());
 
         log.info("testCreateGamerResponse {}", returnedGamer );
     }
 
     private ResponseEntity<CreateGamerResponse> createGamer() {
-        final CreateGamerRequest createGamerRequest = new CreateGamerRequest("NewGamer", new Date(1656366879731L));
+        final CreateGamerRequest createGamerRequest = new CreateGamerRequest("NewGamer", new Date(1656366879731L)
+                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
         final ResponseEntity<CreateGamerResponse> returnedGamer = gamerController.createGamer(createGamerRequest);
 
         final CreateGamerResponse body = returnedGamer.getBody();
@@ -51,12 +53,14 @@ public class GamerControllerIT {
         log.info("testUpdateGamer");
 
         final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
-        final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest(returnedGamer.getBody().getId(), "NewGamer", new Date(1656366879731L));
+        final UpdateGamerRequest updateGamerRequest =
+                new UpdateGamerRequest(returnedGamer.getBody().getId(), "NewGamer", new Date(1656366879731L),
+                        "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
         final ResponseEntity<UpdateGamerResponse> returnedUpdateGamer = gamerController.updateGamer(updateGamerRequest);
 
         final UpdateGamerResponse body = returnedUpdateGamer.getBody();
         assertTrue(body.getSuccess());
-//        assertEquals(body.getId(), gamer.getId());
+        assertEquals(body.getId(), returnedGamer.getBody().getId());
 
         log.info("testUpdateGamer {}", returnedGamer);
     }
@@ -65,7 +69,8 @@ public class GamerControllerIT {
     public void testUpdateGamerNotExists() {
         log.info("testUpdateGamerNotExists");
 
-        final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("2", "NewGamer", new Date(1656366879731L));
+        final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("2", "NewGamer", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
         try {
             gamerController.updateGamer(updateGamerRequest);
             fail("EntityNotFoundException should have been thrown ");

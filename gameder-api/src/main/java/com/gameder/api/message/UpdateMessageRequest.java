@@ -7,15 +7,46 @@ public class UpdateMessageRequest {
 
     private String id;
     private String messageText;
-    private Date creationDate;
+    private String fromUserId;
+    private String toUserId;
 
     public UpdateMessageRequest() {
     }
 
-    public UpdateMessageRequest(String id, String messageText, Date creationDate) {
+    public UpdateMessageRequest(final String id, final String messageText, final String fromUserId, final String toUserId) {
         this.id = id;
         this.messageText = messageText;
-        this.creationDate = creationDate;
+        this.fromUserId = fromUserId;
+        this.toUserId = toUserId;
+    }
+
+    public String getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(String fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public String getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(String toUserId) {
+        this.toUserId = toUserId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UpdateMessageRequest that = (UpdateMessageRequest) o;
+        return id.equals(that.id) && messageText.equals(that.messageText) && fromUserId.equals(that.fromUserId) && toUserId.equals(that.toUserId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, messageText, fromUserId, toUserId);
     }
 
     public String getId() {
@@ -34,36 +65,5 @@ public class UpdateMessageRequest {
         this.messageText = messageText;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(final Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-
-    @Override
-    public String toString() {
-        return "CreateCustomerRequest{" +
-                "id='"+ id + "'" +
-                ", messageText='" + messageText + '\'' +
-                ", creationDate=" + creationDate +
-                '}';
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UpdateMessageRequest that = (UpdateMessageRequest) o;
-        return id.equals(that.id) && messageText.equals(that.messageText) && creationDate.equals(that.creationDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, messageText, creationDate);
-    }
 
 }

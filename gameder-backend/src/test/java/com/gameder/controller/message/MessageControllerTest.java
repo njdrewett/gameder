@@ -40,10 +40,11 @@ public class MessageControllerTest {
     public void testCreateMessage() {
         log.info("testCreateMessage");
 
-        final Message Message = new Message("1","NewMessage", new Date(1656366879731L));
+        final Message Message = new Message("1","NewMessage", new Date(1656366879731L),
+                new Date(1656366879731L),"123", "321");
         Mockito.when(messageService.createMessage(Mockito.any(Message.class))).thenReturn(Message);
 
-        final CreateMessageRequest createMessageRequest = new CreateMessageRequest("NewMessage", new Date(1656366879731L));
+        final CreateMessageRequest createMessageRequest = new CreateMessageRequest("NewMessage", "123", "321");
         final ResponseEntity<CreateMessageResponse> returnedMessage = messageController.createMessage(createMessageRequest);
 
         final CreateMessageResponse body = returnedMessage.getBody();
@@ -57,10 +58,11 @@ public class MessageControllerTest {
     public void testUpdateMessage() {
         log.info("testUpdateMessage");
 
-        final Message message = new Message("1","NewMessage", new Date(1656366879731L));
+        final Message message = new Message("1","NewMessage",
+                new Date(1656366879731L),new Date(1656366879731L),"123", "321");
         Mockito.when(messageService.updateMessage(Mockito.any(Message.class))).thenReturn(message);
 
-        final UpdateMessageRequest updateMessageRequest = new UpdateMessageRequest("1", "NewMessage", new Date(1656366879731L));
+        final UpdateMessageRequest updateMessageRequest = new UpdateMessageRequest("1", "NewMessage", "123","321");
         final ResponseEntity<UpdateMessageResponse> returnedMessage = messageController.updateMessage(updateMessageRequest);
 
         final UpdateMessageResponse body = returnedMessage.getBody();
@@ -74,10 +76,12 @@ public class MessageControllerTest {
     public void testUpdateMessageNotExists() {
         log.info("testUpdateMessageNotExists");
 
-        final Message Message = new Message("1","NewMessage", new Date(1656366879731L));
+        final Message Message = new Message("1","NewMessage", new Date(1656366879731L),new Date(1656366879731L),
+                "123", "321");
         Mockito.when(messageService.updateMessage(Mockito.any(Message.class))).thenReturn(Message);
 
-        final UpdateMessageRequest updateMessageRequest = new UpdateMessageRequest("2", "NewMessage", new Date(1656366879731L));
+        final UpdateMessageRequest updateMessageRequest = new UpdateMessageRequest("2", "NewMessage",
+                "123", "321");
         final ResponseEntity<UpdateMessageResponse> returnedMessage = messageController.updateMessage(updateMessageRequest);
 
         final UpdateMessageResponse body = returnedMessage.getBody();
@@ -91,7 +95,8 @@ public class MessageControllerTest {
     public void testRetrieveMessage() {
         log.info("testRetrieveMessage");
 
-        final Message Message = new Message("1","NewMessage", new Date(1656366879731L));
+        final Message Message = new Message("1","NewMessage", new Date(1656366879731L),new Date(1656366879731L),
+                "123", "321");
 
         Mockito.when(messageService.retrieveMessage("1")).thenReturn(Message);
 

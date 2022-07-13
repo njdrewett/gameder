@@ -14,6 +14,29 @@ public class MessageEntity {
     @GenericGenerator(name="messageentity-uuid", strategy="uuid")
     @GeneratedValue(generator = "messageentity-uuid")
     private String id;
+    private String messageText;
+    private Date creationDate;
+    private Date lastUpdatedDate;
+    private String fromUserId;
+
+    public String getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(String fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public String getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(String toUserId) {
+        this.toUserId = toUserId;
+    }
+
+    private String toUserId;
+    private boolean archived;
 
     public String getMessageText() {
         return messageText;
@@ -23,8 +46,6 @@ public class MessageEntity {
         this.messageText = messageText;
     }
 
-    private String messageText;
-
     public Date getCreationDate() {
         return creationDate;
     }
@@ -33,8 +54,15 @@ public class MessageEntity {
         this.creationDate = creationDate;
     }
 
-    private Date creationDate;
-    private boolean archived;
+
+    public Date getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
+
+    public void setLastUpdatedDate(Date lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
+    }
+
 
     public String getId() {
         return id;

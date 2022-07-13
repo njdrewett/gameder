@@ -1,13 +1,16 @@
 package com.gameder.service;
 
 
+import com.gameder.api.Gamer;
 import com.gameder.api.Message;
+import com.gameder.api.message.RetrieveMessageResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityNotFoundException;
@@ -24,24 +27,40 @@ public class MessageServiceIT {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private GamerService gamerService;
+
     @Test
     public void testCreateMessage() {
         log.info("testCreateMessage");
 
         final Message returnedMessage = createMessage();
+        assertNotNull(returnedMessage.getId());
 
         log.info("testCreateMessageResponse {}", returnedMessage );
     }
 
     private Message createMessage() {
-        final Message Message = new Message(null,"NewMessage", new Date(1656366879731L));
 
-        final Message returnedMessage = messageService.createMessage(Message);
+        final Gamer gamerFrom = new Gamer(null,"NewGamerFrom", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+        final Gamer returnedGamerFrom = gamerService.createGamer(gamerFrom);
+
+        final Gamer gamerTo = new Gamer(null,"NewGamerTo", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+        final Gamer returnedGamerTo = gamerService.createGamer(gamerTo);
+
+        final Message message = new Message(null,"NewMessageUpdated", null, null,gamerFrom.getId(), gamerTo.getId());
+
+        final Message returnedMessage = messageService.createMessage(message);
 
         assertNotNull(returnedMessage.getId());
-        assertEquals(returnedMessage.getId(), returnedMessage.getId());
-        assertEquals(returnedMessage.getCreationDate(), returnedMessage.getCreationDate());
-        assertEquals(returnedMessage.getMessageText(), returnedMessage.getMessageText());
+        assertNotNull(returnedMessage.getCreationDate());
+        assertNotNull(returnedMessage.getLastUpdatedDate());
+        assertEquals(returnedMessage.getMessageText(), message.getMessageText());
+        assertEquals(returnedMessage.getFromUserId(), message.getFromUserId());
+        assertEquals(returnedMessage.getToUserId(), message.getToUserId());
+
         return returnedMessage;
     }
 
@@ -51,15 +70,21 @@ public class MessageServiceIT {
 
         final Message createdMessage = createMessage();
 
-        final Message message = new Message(createdMessage.getId(),"NewMessageUpdated", new Date(1656366879731L));
+        // Get message to retrieve UserId
+        final Message retrieveMessageResponseResponseEntity =
+                messageService.retrieveMessage(createdMessage.getId());
+
+        final Message message = new Message(retrieveMessageResponseResponseEntity.getId(),"NewMessageUpdated", new Date(1656366879731L), new Date(1656366879731L),
+                retrieveMessageResponseResponseEntity.getFromUserId(), retrieveMessageResponseResponseEntity.getToUserId());
 
         final Message returnedMessage = messageService.updateMessage(message);
 
         assertNotNull(returnedMessage.getId());
         assertEquals(returnedMessage.getId(), returnedMessage.getId());
-        assertEquals(returnedMessage.getCreationDate(), returnedMessage.getCreationDate());
+        assertNotNull(returnedMessage.getCreationDate());
         assertEquals(returnedMessage.getMessageText(), returnedMessage.getMessageText());
-
+        assertNotNull(returnedMessage.getLastUpdatedDate());
+        assertNotEquals(returnedMessage.getLastUpdatedDate(),createdMessage.getLastUpdatedDate() );
         log.info("testUpdateMessage {}", returnedMessage);
     }
 
@@ -67,7 +92,7 @@ public class MessageServiceIT {
     public void testUpdateMessageNotExists() {
         log.info("testUpdateMessage");
 
-        final Message message = new Message("1","NewMessage", new Date(1656366879731L));
+        final Message message = new Message("1","NewMessage", null, null,"123","321");
 
         try {
             messageService.updateMessage(message);
@@ -90,6 +115,11 @@ public class MessageServiceIT {
         final Message returnedMessage = messageService.retrieveMessage(createdMessage.getId());
 
         assertNotNull(returnedMessage.getId());
+        assertNotNull(returnedMessage.getId());
+        assertEquals(returnedMessage.getId(), returnedMessage.getId());
+        assertNotNull(returnedMessage.getCreationDate());
+        assertEquals(returnedMessage.getMessageText(), returnedMessage.getMessageText());
+        assertNotNull(returnedMessage.getLastUpdatedDate());
 
         log.info("testRetrieveMessage {}", returnedMessage);
     }

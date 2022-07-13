@@ -13,8 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Message To Entity test
- *
- * @todo This should more ideally fail if new attributes are added to entity or Message.
  */
 public class MessageMessageEntityConverterTest {
 
@@ -25,12 +23,15 @@ public class MessageMessageEntityConverterTest {
         MessageEntity messageEntity = createMessageEntity();
         log.info("toMessageTest {}", messageEntity);
 
-        Message message = MessageMessageEntityConverter.toMessage(messageEntity);
+        final Message message = MessageMessageEntityConverter.toMessage(messageEntity);
 
         assertNotNull(message.getId());
         assertEquals(message.getId(), messageEntity.getId());
         assertEquals(message.getMessageText(), messageEntity.getMessageText());
         assertEquals(message.getCreationDate(), messageEntity.getCreationDate());
+        assertEquals(message.getLastUpdatedDate(), messageEntity.getLastUpdatedDate());
+        assertEquals(message.getFromUserId(), messageEntity.getFromUserId());
+        assertEquals(message.getToUserId(), messageEntity.getToUserId());
 
         log.info("toMessageTest {}", message);
     }
@@ -40,30 +41,38 @@ public class MessageMessageEntityConverterTest {
         Message message = createMessage();
         log.info("toMessageTest {}", message);
 
-        MessageEntity messageEntity = MessageMessageEntityConverter.toMessageEntity(message);
+        final MessageEntity messageEntity = MessageMessageEntityConverter.toMessageEntity(message);
 
         assertNotNull(messageEntity.getId());
         assertEquals(messageEntity.getId(), message.getId());
         assertEquals(messageEntity.getMessageText(), message.getMessageText());
         assertEquals(messageEntity.getCreationDate(), message.getCreationDate());
+        assertEquals(messageEntity.getLastUpdatedDate(), message.getLastUpdatedDate());
+        assertEquals(messageEntity.getFromUserId(), message.getFromUserId());
+        assertEquals(messageEntity.getToUserId(), message.getToUserId());
 
         log.info("toMessageTest {}", messageEntity);
     }
 
     private MessageEntity createMessageEntity() {
-        MessageEntity messageEntity = new MessageEntity();
+        final MessageEntity messageEntity = new MessageEntity();
         messageEntity.setId("1");
         messageEntity.setCreationDate(new Date(1234567890L));
+        messageEntity.setLastUpdatedDate(new Date(1234567890L));
         messageEntity.setMessageText("Test Message");
+        messageEntity.setFromUserId("123");
+        messageEntity.setToUserId("321");
         return messageEntity;
     }
 
     private Message createMessage() {
-        Message message = new Message();
+        final Message message = new Message();
         message.setId("1");
         message.setCreationDate(new Date(1234567890L));
+        message.setLastUpdatedDate(new Date(1234567890L));
         message.setMessageText("Test Message");
+        message.setFromUserId("123");
+        message.setToUserId("321");
         return message;
     }
-
 }

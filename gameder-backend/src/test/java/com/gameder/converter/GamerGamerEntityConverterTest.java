@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Gamer To Entity test
  *
- * @todo This should more ideally fail if new attributes are added to entity or gamer.
  */
 public class GamerGamerEntityConverterTest {
 
@@ -26,13 +25,15 @@ public class GamerGamerEntityConverterTest {
         GamerEntity gamerEntity = createGamerEntity();
         log.info("toGamerTest {}", gamerEntity);
 
-        Gamer gamer = GamerGamerEntityConverter.toGamer(gamerEntity);
-
+        final Gamer gamer = GamerGamerEntityConverter.toGamer(gamerEntity);
 
         assertNotNull(gamer.getId());
         assertEquals(gamer.getId(), gamerEntity.getId());
         assertEquals(gamer.getDateOfBirth(), gamerEntity.getDateOfBirth());
         assertEquals(gamer.getDisplayName(), gamerEntity.getDisplayName());
+        assertEquals(gamer.getEmailAddress(), gamerEntity.getEmailAddress());
+        assertEquals(gamer.getIntroductionText(), gamerEntity.getIntroductionText());
+        assertEquals(gamer.getTelephoneNumber(), gamerEntity.getTelephoneNumber());
 
         log.info("toGamerTest {}", gamer);
     }
@@ -42,29 +43,39 @@ public class GamerGamerEntityConverterTest {
         Gamer gamer = createGamer();
         log.info("toGamerTest {}", gamer);
 
-        GamerEntity gamerEntity = GamerGamerEntityConverter.toGamerEntity(gamer);
+        final GamerEntity gamerEntity = GamerGamerEntityConverter.toGamerEntity(gamer);
 
         assertNotNull(gamerEntity.getId());
         assertEquals(gamerEntity.getId(), gamer.getId());
         assertEquals(gamerEntity.getDateOfBirth(), gamer.getDateOfBirth());
         assertEquals(gamerEntity.getDisplayName(), gamer.getDisplayName());
+        assertEquals(gamerEntity.getEmailAddress(), gamer.getEmailAddress());
+        assertEquals(gamerEntity.getIntroductionText(), gamer.getIntroductionText());
+        assertEquals(gamerEntity.getTelephoneNumber(), gamer.getTelephoneNumber());
 
         log.info("toGamerTest {}", gamerEntity);
     }
 
     private GamerEntity createGamerEntity() {
-        GamerEntity gamerEntity = new GamerEntity();
+        final GamerEntity gamerEntity = new GamerEntity();
         gamerEntity.setId("1");
-        gamerEntity.setDateOfBirth(new Date(1234567890l));
+        gamerEntity.setDateOfBirth(new Date(1234567890L));
         gamerEntity.setDisplayName("Test Gamer");
+        gamerEntity.setTelephoneNumber("12234557890");
+        gamerEntity.setIntroductionText("Hi Im A Gemer");
+        gamerEntity.setEmailAddress("gamer@gamers.com");
+
         return gamerEntity;
     }
 
     private Gamer createGamer() {
-        Gamer gamer = new Gamer();
+        final Gamer gamer = new Gamer();
         gamer.setId("1");
-        gamer.setDateOfBirth(new Date(1234567890l));
+        gamer.setDateOfBirth(new Date(1234567890L));
         gamer.setDisplayName("Test Gamer");
+        gamer.setTelephoneNumber("12234557890");
+        gamer.setIntroductionText("Hi Im A Gemer");
+        gamer.setEmailAddress("gamer@gamers.com");
         return gamer;
     }
 

@@ -1,6 +1,9 @@
 package com.gameder.controller.message;
 
+import com.gameder.api.gamer.CreateGamerRequest;
+import com.gameder.api.gamer.CreateGamerResponse;
 import com.gameder.api.message.*;
+import com.gameder.controller.gamer.GamerController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -27,22 +30,39 @@ public class MessageControllerIT {
     @Autowired
     private MessageController messageController;
 
+    @Autowired
+    private GamerController gamerController;
+
     @Test
     public void testCreateMessage() {
         log.info("testCreateMessage");
 
         final ResponseEntity<CreateMessageResponse> returnedMessage = createMessage();
-//        assertEquals(body.getId(), message.getId());
+
+        assertNotNull(returnedMessage.getBody().getId());
+        assertTrue(returnedMessage.getBody().getSuccess());
 
         log.info("testCreateMessageResponse {}", returnedMessage );
     }
 
     private ResponseEntity<CreateMessageResponse> createMessage() {
-        final CreateMessageRequest createMessageRequest = new CreateMessageRequest("NewMessage", new Date(1656366879731L));
+
+        // we need to create to users to link the messages to
+        final CreateGamerRequest createGamerRequestFrom = new CreateGamerRequest("NewGamerA", new Date(1656366879731L)
+                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamerA");
+        final ResponseEntity<CreateGamerResponse> returnedGamerFrom = gamerController.createGamer(createGamerRequestFrom);
+        final CreateGamerRequest createGamerRequestTo = new CreateGamerRequest("NewGamerB", new Date(1656366879731L)
+                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamerA");
+        final ResponseEntity<CreateGamerResponse> returnedGamerTo = gamerController.createGamer(createGamerRequestTo);
+
+
+        final CreateMessageRequest createMessageRequest = new CreateMessageRequest("NewMessage",
+                returnedGamerFrom.getBody().getId(), returnedGamerTo.getBody().getId() );
         final ResponseEntity<CreateMessageResponse> returnedMessage = messageController.createMessage(createMessageRequest);
 
         final CreateMessageResponse body = returnedMessage.getBody();
         assertTrue(body.getSuccess());
+
         return returnedMessage;
     }
 
@@ -51,12 +71,19 @@ public class MessageControllerIT {
         log.info("testUpdateMessage");
 
         final ResponseEntity<CreateMessageResponse> returnedMessage = createMessage();
-        final UpdateMessageRequest updateMessageRequest = new UpdateMessageRequest(returnedMessage.getBody().getId(), "NewMessage", new Date(1656366879731L));
+
+        // Get message to retrieve UserId
+        final ResponseEntity<RetrieveMessageResponse> retrieveMessageResponseResponseEntity =
+                messageController.retrieveMessage(returnedMessage.getBody().getId());
+
+        final UpdateMessageRequest updateMessageRequest = new UpdateMessageRequest(returnedMessage.getBody().getId(), "NewMessage",
+                retrieveMessageResponseResponseEntity.getBody().getFromUserId(), retrieveMessageResponseResponseEntity.getBody().getFromUserId());
+
         final ResponseEntity<UpdateMessageResponse> returnedUpdateMessage = messageController.updateMessage(updateMessageRequest);
 
         final UpdateMessageResponse body = returnedUpdateMessage.getBody();
         assertTrue(body.getSuccess());
-//        assertEquals(body.getId(), Message.getId());
+        assertEquals(body.getId(), body.getId());
 
         log.info("testUpdateMessage {}", returnedMessage);
     }
@@ -65,7 +92,7 @@ public class MessageControllerIT {
     public void testUpdateMessageNotExists() {
         log.info("testUpdateMessageNotExists");
 
-        final UpdateMessageRequest updateMessageRequest = new UpdateMessageRequest("2", "NewMessage", new Date(1656366879731L));
+        final UpdateMessageRequest updateMessageRequest = new UpdateMessageRequest("2", "NewMessage", "213", "321");
         try {
             messageController.updateMessage(updateMessageRequest);
             fail("EntityNotFoundException should have been thrown ");

@@ -17,6 +17,45 @@ public class GamerEntity {
 
     private String displayName;
     private Date dateOfBirth;
+
+    private String emailAddress;
+    private String telephoneNumber;
+    private byte[] profileImage;
+    private String introductionText;
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public byte[] getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getIntroductionText() {
+        return introductionText;
+    }
+
+    public void setIntroductionText(String introductionText) {
+        this.introductionText = introductionText;
+    }
+
+
     private boolean archived;
 
     public String getId() {
