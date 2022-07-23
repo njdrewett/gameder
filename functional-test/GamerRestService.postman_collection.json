@@ -1,0 +1,18 @@
+{
+	"info": {
+		"_postman_id": "7e13bd21-01d2-4e81-bbe6-a88f3898a19c",
+		"name": "GamerRestService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18692578"
+	},
+	"item": [
+		{
+			"name": "CreateGamer",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
