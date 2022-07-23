@@ -73,7 +73,7 @@ nav .nav-button:disabled {
   height: 100vh;
   position: fixed;
   background: linear-gradient(to bottom, rgba(5, 5, 5,0.65) 0%, rgba(110, 110, 110, 0) 100%),
-   url('images/young-gamers.jpg'); 
+   url('images/gamers.jpg'); 
 }
 
 .home {
