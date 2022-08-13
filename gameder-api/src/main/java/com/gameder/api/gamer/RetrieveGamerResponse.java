@@ -10,39 +10,6 @@ public class RetrieveGamerResponse {
     private Date dateOfBirth;
 
     private String emailAddress;
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getTelephoneNumber() {
-        return telephoneNumber;
-    }
-
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
-    }
-
-    public byte[] getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(byte[] profileImage) {
-        this.profileImage = profileImage;
-    }
-
-    public String getIntroductionText() {
-        return introductionText;
-    }
-
-    public void setIntroductionText(String introductionText) {
-        this.introductionText = introductionText;
-    }
-
     private String telephoneNumber;
     private byte[] profileImage;
     private String introductionText;
@@ -87,11 +54,42 @@ public class RetrieveGamerResponse {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public byte[] getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getIntroductionText() {
+        return introductionText;
+    }
+
+    public void setIntroductionText(String introductionText) {
+        this.introductionText = introductionText;
+    }
 
     @Override
     public String toString() {
-        return "CreateCustomerRequest{" +
-                "id='"+ id + "'" +
+        return "RetrieveGamerResponse{" +
+                "id='" + id + "'" +
                 ", displayName='" + displayName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 '}';
@@ -109,6 +107,4 @@ public class RetrieveGamerResponse {
     public int hashCode() {
         return Objects.hash(id, displayName, dateOfBirth);
     }
-
-
 }

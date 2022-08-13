@@ -8,6 +8,14 @@ public class Gamer {
     private String displayName;
     private Date dateOfBirth;
     private String emailAddress;
+    private String telephoneNumber;
+    private byte[] profileImage;
+    private String introductionText;
+
+
+    public Gamer() {
+        super();
+    }
 
     public Gamer(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImage, String introductionText) {
         this.id = id;
@@ -18,10 +26,6 @@ public class Gamer {
         this.profileImage = profileImage;
         this.introductionText = introductionText;
     }
-
-    private String telephoneNumber;
-    private byte[] profileImage;
-    private String introductionText;
 
     public String getEmailAddress() {
         return emailAddress;
@@ -55,12 +59,6 @@ public class Gamer {
         this.introductionText = introductionText;
     }
 
-
-    public Gamer() {
-        super();
-    }
-
-
     public String getId() {
         return id;
     }
@@ -85,11 +83,15 @@ public class Gamer {
         this.dateOfBirth = dateOfBirth;
     }
 
+    @Override
     public String toString() {
-
-        return "Id: " + id +
-                "DisplayName: " + displayName +
-                "DateOfBirth: " + dateOfBirth;
+        return "Gamer{" +
+                "id='" + id + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", telephoneNumber='" + telephoneNumber + '\'' +
+                ", introductionText='" + introductionText + '\'' +
+                '}';
     }
-
 }

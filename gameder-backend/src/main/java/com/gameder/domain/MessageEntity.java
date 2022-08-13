@@ -19,6 +19,9 @@ public class MessageEntity {
     private Date lastUpdatedDate;
     private String fromUserId;
 
+    public MessageEntity() {
+    }
+
     public String getFromUserId() {
         return fromUserId;
     }

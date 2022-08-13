@@ -22,6 +22,11 @@ public class GamerEntity {
     private String telephoneNumber;
     private byte[] profileImage;
     private String introductionText;
+    private boolean archived;
+
+
+    public GamerEntity() {
+    }
 
     public String getEmailAddress() {
         return emailAddress;
@@ -54,9 +59,6 @@ public class GamerEntity {
     public void setIntroductionText(String introductionText) {
         this.introductionText = introductionText;
     }
-
-
-    private boolean archived;
 
     public String getId() {
         return id;

@@ -89,7 +89,7 @@ public class UpdateGamerRequest {
 
     @Override
     public String toString() {
-        return "CreateCustomerRequest{" +
+        return "UpdateGamerRequest{" +
                 "id='"+ id + "'" +
                 ", displayName='" + displayName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +

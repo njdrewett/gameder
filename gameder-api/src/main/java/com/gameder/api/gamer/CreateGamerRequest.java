@@ -10,6 +10,9 @@ public class CreateGamerRequest {
     private String telephoneNumber;
     private byte[] profileImage;
 
+    public CreateGamerRequest() {
+    }
+
     public CreateGamerRequest(String displayName, Date dateOfBirth,  String emailAddress,String telephoneNumber, byte[] profileImage, String introductionText) {
         this.displayName = displayName;
         this.dateOfBirth = dateOfBirth;
@@ -55,12 +58,6 @@ public class CreateGamerRequest {
         this.introductionText = introductionText;
     }
 
-
-    public CreateGamerRequest() {
-    }
-
-
-
     public String getDisplayName() {
         return displayName;
     }
@@ -79,7 +76,7 @@ public class CreateGamerRequest {
 
     @Override
     public String toString() {
-        return "CreateCustomerRequest{" +
+        return "CreateGamerRequest{" +
                 ", displayName='" + displayName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 '}';

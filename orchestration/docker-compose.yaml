@@ -8,11 +8,11 @@ services:
       POSTGRES_PASSWORD: password
       PGDATA: /data/gameder
     volumes:
-      - gameder-postgres:/data/gameder
+      - postgres:/data/gameder
     ports:
       - "5432:5432"
     networks:
-      - gameder-postgres
+      - gameder
     restart: unless-stopped
 
   gameder-pgadmin:
@@ -23,17 +23,41 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
-      - gameder-pgadmin:/var/lib/pgadmin
+      - pgadmin:/var/lib/pgadmin
     ports:
       - "5050:80"
     networks:
-      - gameder-postgres
+      - gameder
     restart: unless-stopped
 
+#  keycloak:
+#    container_name: gameder-keycloak
+#    image: quay.io/keycloak/keycloak:legacy
+#    environment:
+#      DB_VENDOR: POSTGRES
+#      DB_ADDR: gameder-postgres
+#      DB_DATABASE: gameder
+#      DB_USER: gameder
+#      DB_SCHEMA: public
+#      DB_PASSWORD: password
+#      KEYCLOAK_USER: admin
+#      KEYCLOAK_PASSWORD: Pa55w0rd
+#      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+#      #JDBC_PARAMS: "ssl=true"
+#    networks:
+#      - gameder
+#    ports:
+#      - 9990:9990
+#      - 8080:8080
+#      - 8180:8080
+#      - 8443:8443
+#    depends_on:
+#      - gameder-postgres
+
 networks:
-  gameder-postgres:
+  gameder:
     driver: bridge
 
 volumes:
-  gameder-postgres:
-  gameder-pgadmin:
+  postgres:
+  pgadmin:
