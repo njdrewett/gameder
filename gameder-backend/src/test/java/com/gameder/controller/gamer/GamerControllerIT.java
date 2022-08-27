@@ -3,6 +3,7 @@ package com.gameder.controller.gamer;
 import com.gameder.api.gamer.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,9 +40,26 @@ public class GamerControllerIT {
         log.info("testCreateGamerResponse {}", returnedGamer );
     }
 
+    @Test
+    public void testCreateGamerMinimalData() {
+        log.info("testCreateGamer");
+
+        final CreateGamerRequest minimalGamer = new CreateGamerRequest();
+        minimalGamer.setEmailAddress("testGamerEmail@mail.com");
+        minimalGamer.setPassword("password");
+
+        final ResponseEntity<CreateGamerResponse> returnedGamer = gamerController.createGamer(minimalGamer);
+
+        assertNotNull(returnedGamer.getBody().getId());
+        assertTrue(returnedGamer.getBody().getSuccess());
+
+        log.info("testCreateGamerResponse {}", returnedGamer );
+    }
+
+
     private ResponseEntity<CreateGamerResponse> createGamer() {
         final CreateGamerRequest createGamerRequest = new CreateGamerRequest("NewGamer", new Date(1656366879731L)
-                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         final ResponseEntity<CreateGamerResponse> returnedGamer = gamerController.createGamer(createGamerRequest);
 
         final CreateGamerResponse body = returnedGamer.getBody();
@@ -55,7 +74,7 @@ public class GamerControllerIT {
         final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
         final UpdateGamerRequest updateGamerRequest =
                 new UpdateGamerRequest(returnedGamer.getBody().getId(), "NewGamer", new Date(1656366879731L),
-                        "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                        "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         final ResponseEntity<UpdateGamerResponse> returnedUpdateGamer = gamerController.updateGamer(updateGamerRequest);
 
         final UpdateGamerResponse body = returnedUpdateGamer.getBody();
@@ -70,7 +89,7 @@ public class GamerControllerIT {
         log.info("testUpdateGamerNotExists");
 
         final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("2", "NewGamer", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         try {
             gamerController.updateGamer(updateGamerRequest);
             fail("EntityNotFoundException should have been thrown ");
@@ -91,7 +110,20 @@ public class GamerControllerIT {
 
         assertNotNull(getGamerResponse.getBody().getId());
 
-        log.info("testRetrieveGamer {}", returnedGamer);
+        log.info("testRetrieveGamer {}", getGamerResponse);
+    }
+
+    @Test
+    public void testRetrieveAllGamers() {
+        log.info("testRetrieveGamer");
+
+        createGamer();
+
+        final ResponseEntity<List<RetrieveGamerResponse>> getAllGamersResponse = gamerController.retrieveAllGamers();
+
+        assertNotNull(getAllGamersResponse.getBody());
+
+        log.info("testRetrieveGamer {}", getAllGamersResponse);
     }
 
     @Test
@@ -136,4 +168,19 @@ public class GamerControllerIT {
 
         log.info("testArchiveGamerNotFound");
     }
+
+    @Test
+    public void testEmailExists() {
+        log.info("testEmailExists");
+
+        final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
+
+        final ResponseEntity<Boolean> result = gamerController.emailExists("gamer@gamers.com");
+
+        final Boolean body = result.getBody();
+        assertTrue(body);
+
+        log.info("testEmailExists");
+    }
+
 }

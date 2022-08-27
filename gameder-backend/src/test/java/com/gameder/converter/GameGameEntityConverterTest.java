@@ -1,15 +1,18 @@
 package com.gameder.converter;
 
 import com.gameder.api.Game;
+import com.gameder.api.Gamer;
 import com.gameder.domain.GameEntity;
+import com.gameder.domain.GamerEntity;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Game To Entity test
@@ -26,6 +29,26 @@ public class GameGameEntityConverterTest {
 
         final Game game = GameGameEntityConverter.toGame(gameEntity);
 
+        assertNotNull(game.getId());
+        assertEquals(game.getId(), gameEntity.getId());
+        assertEquals(game.getAgeRestriction(), gameEntity.getAgeRestriction());
+        assertEquals(game.getDisplayName(), gameEntity.getDisplayName());
+        assertEquals(game.getDescriptionText(), gameEntity.getDescriptionText());
+
+        log.info("toGameTest {}", game);
+    }
+
+    @Test
+    public void toGameListTest() {
+        GameEntity gameEntity = createGameEntity();
+        log.info("toGameTest {}", gameEntity);
+
+        List<GameEntity> gameEntities = Collections.singletonList(gameEntity);
+
+        final List<Game> allGames = GameGameEntityConverter.toGame(gameEntities);
+
+        assertTrue( allGames.size() == 1,"List must have one element");
+        Game game = allGames.get(0);
         assertNotNull(game.getId());
         assertEquals(game.getId(), gameEntity.getId());
         assertEquals(game.getAgeRestriction(), gameEntity.getAgeRestriction());

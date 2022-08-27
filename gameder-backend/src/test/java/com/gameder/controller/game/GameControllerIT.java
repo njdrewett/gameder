@@ -1,6 +1,7 @@
 package com.gameder.controller.game;
 
 import com.gameder.api.game.*;
+import com.gameder.api.gamer.RetrieveGamerResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -93,6 +95,19 @@ public class GameControllerIT {
         assertNotNull(getGameResponse.getBody().getId());
 
         log.info("testRetrieveGame {}", returnedGame);
+    }
+
+    @Test
+    public void testRetrieveAllGames() {
+        log.info("testRetrieveGame");
+
+        createGame();
+
+        final ResponseEntity<List<RetrieveGameResponse>> getAllGamesResponse = gameController.retrieveAllGames();
+
+        assertNotNull(getAllGamesResponse.getBody());
+
+        log.info("testRetrieveGame {}", getAllGamesResponse);
     }
 
     @Test

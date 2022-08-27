@@ -12,10 +12,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,7 +43,7 @@ public class GamerServiceTest {
       log.info("testCreateGamer");
 
       final Gamer gamer = new Gamer(null,"NewGamer", new Date(1656366879731L),
-              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
 
       final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
 
@@ -58,6 +58,7 @@ public class GamerServiceTest {
       assertEquals(returnedGamer.getEmailAddress(), gamer.getEmailAddress());
       assertEquals(returnedGamer.getIntroductionText(), gamer.getIntroductionText());
       assertEquals(returnedGamer.getTelephoneNumber(), gamer.getTelephoneNumber());
+      assertEquals(returnedGamer.getPassword(), persistedGamerEntity.getPassword());
 
       log.info("testCreateGamerResponse {}", returnedGamer );
    }
@@ -66,7 +67,7 @@ public class GamerServiceTest {
    public void testUpdateGamer() {
       log.info("testUpdateGamer");
 
-      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),"gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),"gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
 
       final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
 
@@ -82,6 +83,7 @@ public class GamerServiceTest {
       assertEquals(returnedGamer.getEmailAddress(), persistedGamerEntity.getEmailAddress());
       assertEquals(returnedGamer.getIntroductionText(), persistedGamerEntity.getIntroductionText());
       assertEquals(returnedGamer.getTelephoneNumber(), persistedGamerEntity.getTelephoneNumber());
+      assertEquals(returnedGamer.getPassword(), persistedGamerEntity.getPassword());
 
       log.info("testUpdateGamer {}", returnedGamer);
    }
@@ -91,7 +93,7 @@ public class GamerServiceTest {
       log.info("testUpdateGamer");
 
       final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
-              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
 
       Mockito.when(gamerRepository.findById(gamer.getId())).thenReturn(Optional.empty());
 
@@ -112,7 +114,7 @@ public class GamerServiceTest {
       log.info("testRetrieveGamer");
 
       final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
-              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
 
       final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
 
@@ -121,6 +123,33 @@ public class GamerServiceTest {
       final Gamer returnedGamer = gamerService.retrieveGamer("1");
 
       assertNotNull(returnedGamer.getId());
+      assertEquals(returnedGamer.getId(), persistedGamerEntity.getId());
+      assertEquals(returnedGamer.getDateOfBirth(), persistedGamerEntity.getDateOfBirth());
+      assertEquals(returnedGamer.getDisplayName(), persistedGamerEntity.getDisplayName());
+      assertEquals(returnedGamer.getEmailAddress(), persistedGamerEntity.getEmailAddress());
+      assertEquals(returnedGamer.getIntroductionText(), persistedGamerEntity.getIntroductionText());
+      assertEquals(returnedGamer.getTelephoneNumber(), persistedGamerEntity.getTelephoneNumber());
+      assertEquals(returnedGamer.getPassword(), persistedGamerEntity.getPassword());
+
+      log.info("testRetrieveGamer {}", returnedGamer);
+   }
+
+   @Test
+   public void testRetrieveAllGamers() {
+      log.info("testRetrieveAllGamers");
+
+      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
+
+      final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
+
+      Mockito.when(gamerRepository.findAll()).thenReturn(Collections.singletonList(persistedGamerEntity));
+
+      final List<Gamer> returnedGamers = gamerService.retrieveAllGamers();
+
+      assertNotNull(returnedGamers);
+      assertTrue(returnedGamers.size() == 1);
+      Gamer returnedGamer = returnedGamers.get(0);
       assertNotNull(returnedGamer.getId());
       assertEquals(returnedGamer.getId(), persistedGamerEntity.getId());
       assertEquals(returnedGamer.getDateOfBirth(), persistedGamerEntity.getDateOfBirth());
@@ -128,6 +157,7 @@ public class GamerServiceTest {
       assertEquals(returnedGamer.getEmailAddress(), persistedGamerEntity.getEmailAddress());
       assertEquals(returnedGamer.getIntroductionText(), persistedGamerEntity.getIntroductionText());
       assertEquals(returnedGamer.getTelephoneNumber(), persistedGamerEntity.getTelephoneNumber());
+      assertEquals(returnedGamer.getPassword(), persistedGamerEntity.getPassword());
 
       log.info("testRetrieveGamer {}", returnedGamer);
    }
@@ -155,7 +185,7 @@ public class GamerServiceTest {
       log.info("testArchiveGamer");
 
       final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
-              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
       final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
 
       Mockito.when(gamerRepository.findById("1")).thenReturn(Optional.of(persistedGamerEntity));
@@ -192,7 +222,26 @@ public class GamerServiceTest {
       gamerEntity.setEmailAddress(gamer.getEmailAddress());
       gamerEntity.setIntroductionText(gamer.getIntroductionText());
       gamerEntity.setTelephoneNumber(gamer.getTelephoneNumber());
-
+      gamerEntity.setPassword("password");
       return gamerEntity;
+   }
+
+   @Test
+   public void testEmailExists() {
+      log.info("testEmailExists");
+
+      final Gamer gamer = new Gamer(null,"NewGamer", new Date(1656366879731L),
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
+
+      final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
+      final List<GamerEntity> gamers = Collections.singletonList(persistedGamerEntity);
+
+      Mockito.when(gamerRepository.findByEmailAddress("gamer@gamers.com")).thenReturn(gamers);
+
+      Boolean result = gamerService.emailExists("gamer@gamers.com");
+
+      assertTrue(result);
+
+      log.info("testEmailExists");
    }
 }

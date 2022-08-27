@@ -14,7 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +29,7 @@ public class GamerControllerTest {
 
     private static final Logger log = LoggerFactory.getLogger(GamerControllerTest.class);
 
-    GamerController gamerController;
+    private GamerController gamerController;
 
     @Mock
     private GamerService gamerService;
@@ -41,11 +44,11 @@ public class GamerControllerTest {
         log.info("testCreateGamer");
 
         final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         Mockito.when(gamerService.createGamer(Mockito.any(Gamer.class))).thenReturn(gamer);
 
         final CreateGamerRequest createGamerRequest = new CreateGamerRequest("NewGamer", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         final ResponseEntity<CreateGamerResponse> returnedGamer = gamerController.createGamer(createGamerRequest);
 
         final CreateGamerResponse body = returnedGamer.getBody();
@@ -60,12 +63,12 @@ public class GamerControllerTest {
         log.info("testUpdateGamer");
 
         final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         Mockito.when(gamerService.updateGamer(Mockito.any(Gamer.class))).thenReturn(gamer);
 
         final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("1", "NewGamer",
                 new Date(1656366879731L),"gamer@gamers.com", "019191999991911",
-                null, "Hi Im a gamer");
+                null, "Hi Im a gamer", "password");
         final ResponseEntity<UpdateGamerResponse> returnedGamer = gamerController.updateGamer(updateGamerRequest);
 
         final UpdateGamerResponse body = returnedGamer.getBody();
@@ -80,11 +83,11 @@ public class GamerControllerTest {
         log.info("testUpdateGamerNotExists");
 
         final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         Mockito.when(gamerService.updateGamer(Mockito.any(Gamer.class))).thenReturn(gamer);
 
         final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("2", "NewGamer", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         final ResponseEntity<UpdateGamerResponse> returnedGamer = gamerController.updateGamer(updateGamerRequest);
 
         final UpdateGamerResponse body = returnedGamer.getBody();
@@ -100,13 +103,30 @@ public class GamerControllerTest {
 
         final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
                 "gamer@gamers.com", "019191999991911", null,
-                "Hi Im a gamer");
+                "Hi Im a gamer", "password");
 
         Mockito.when(gamerService.retrieveGamer("1")).thenReturn(gamer);
 
         final ResponseEntity<RetrieveGamerResponse> returnedGamer = gamerController.retrieveGamer("1");
 
         assertNotNull(returnedGamer.getBody().getId());
+
+        log.info("testRetrieveGamer {}", returnedGamer);
+    }
+
+    @Test
+    public void testRetrieveAllGamers() {
+        log.info("testRetrieveAllGamers");
+
+        final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null,
+                "Hi Im a gamer", "password");
+
+        Mockito.when(gamerService.retrieveAllGamers()).thenReturn(Collections.singletonList(gamer));
+
+        final ResponseEntity<List<RetrieveGamerResponse>> returnedGamer = gamerController.retrieveAllGamers();
+
+        assertNotNull(returnedGamer.getBody());
 
         log.info("testRetrieveGamer {}", returnedGamer);
     }
@@ -135,26 +155,22 @@ public class GamerControllerTest {
 
         Mockito.doNothing().when(gamerService).archiveGamer("1");
 
-        gamerService.archiveGamer("1");
+        gamerController.archiveGamer("1");
 
         log.info("testArchiveGamer");
     }
 
     @Test
-    public void testArchiveGamerNotFound() {
-        log.info("testArchiveGamer");
+    public void testEmailExists() {
+        log.info("testEmailExists");
 
-        Mockito.doThrow(new EntityNotFoundException()).when(gamerService).archiveGamer("1");
+        Mockito.when(gamerService.emailExists("test@emailAddress.com")).thenReturn(Boolean.TRUE);
 
-        try {
-            gamerService.archiveGamer("1");
+        ResponseEntity<Boolean> result = gamerController.emailExists("test@emailAddress.com");
 
-            fail("EntityNotFoundException NOT thrown as expected");
+        final Boolean body = result.getBody();
+        assertTrue(body);
 
-        } catch (EntityNotFoundException exception) {
-            log.info("EntityNotFoundException thrown as expected" );
-        }
-
-        log.info("testArchiveGamerNotFound");
+        log.info("testEmailExists");
     }
 }

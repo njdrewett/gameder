@@ -1,8 +1,11 @@
 package com.gameder.service.game;
 
 import com.gameder.api.Game;
+import com.gameder.api.Gamer;
 import com.gameder.converter.GameGameEntityConverter;
+import com.gameder.converter.GamerGamerEntityConverter;
 import com.gameder.domain.GameEntity;
+import com.gameder.domain.GamerEntity;
 import com.gameder.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class GameServiceImpl extends GameServiceBase {
@@ -50,6 +54,21 @@ public class GameServiceImpl extends GameServiceBase {
         log.info("Exiting retrieveGame: {}" , gameResponse);
 
         return gameResponse;
+    }
+
+    @Override
+    @Transactional(Transactional.TxType.NOT_SUPPORTED)
+    public List<Game> retrieveAllGames() {
+        log.info("Entering retrieveAllGames");
+
+        final List<GameEntity> gameEntities = getGameRepository().findAll();
+
+        final List<Game> gameResponse = GameGameEntityConverter.toGame(gameEntities);
+
+        log.info("Exiting retrieveAllGames");
+
+        return gameResponse;
+
     }
 
     @Override

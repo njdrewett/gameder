@@ -49,10 +49,10 @@ public class MessageControllerIT {
 
         // we need to create to users to link the messages to
         final CreateGamerRequest createGamerRequestFrom = new CreateGamerRequest("NewGamerA", new Date(1656366879731L)
-                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamerA");
+                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamerA", "password");
         final ResponseEntity<CreateGamerResponse> returnedGamerFrom = gamerController.createGamer(createGamerRequestFrom);
         final CreateGamerRequest createGamerRequestTo = new CreateGamerRequest("NewGamerB", new Date(1656366879731L)
-                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamerA");
+                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamerA", "password");
         final ResponseEntity<CreateGamerResponse> returnedGamerTo = gamerController.createGamer(createGamerRequestTo);
 
 

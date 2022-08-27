@@ -8,8 +8,9 @@ public class UpdateGamerRequest {
     private String id;
     private String displayName;
     private Date dateOfBirth;
+    private String password;
 
-    public UpdateGamerRequest(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImage, String introductionText) {
+    public UpdateGamerRequest(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImage, String introductionText, String password) {
         this.id = id;
         this.displayName = displayName;
         this.dateOfBirth = dateOfBirth;
@@ -17,6 +18,7 @@ public class UpdateGamerRequest {
         this.telephoneNumber = telephoneNumber;
         this.profileImage = profileImage;
         this.introductionText = introductionText;
+        this.password = password;
     }
 
     private String emailAddress;
@@ -61,7 +63,6 @@ public class UpdateGamerRequest {
     }
 
 
-
     public String getId() {
         return id;
     }
@@ -86,6 +87,13 @@ public class UpdateGamerRequest {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public String toString() {

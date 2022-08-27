@@ -2,21 +2,25 @@ package com.gameder.service;
 
 
 import com.gameder.api.Game;
+import com.gameder.api.Gamer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class GameServiceIT {
 
     private final Logger log = LoggerFactory.getLogger(GameServiceIT.class);
@@ -99,6 +103,23 @@ public class GameServiceIT {
 
         log.info("testRetrieveGame {}", returnedGame);
     }
+
+    @Test
+    public void testRetrieveAllGames() {
+        log.info("testRetrieveAllGames");
+
+        final Game createdGame = createGame();
+
+        final List<Game> returnedGame = gameService.retrieveAllGames();
+
+        log.info("Games all: " + returnedGame);
+
+        assertNotNull(returnedGame);
+        assertTrue(returnedGame.size() == 1);
+
+        log.info("testRetrieveGamer {}", returnedGame);
+    }
+
 
     @Test
     public void testRetrieveGameNotFound() {

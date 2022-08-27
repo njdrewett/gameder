@@ -3,6 +3,8 @@ package com.gameder.controller.gamer;
 import com.gameder.api.gamer.*;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface GamerController {
 
     ResponseEntity<CreateGamerResponse> createGamer(final CreateGamerRequest createGamerRequest);
@@ -11,5 +13,11 @@ public interface GamerController {
 
     ResponseEntity<UpdateGamerResponse> updateGamer(final UpdateGamerRequest updateGamerRequest);
 
-    void archiveGamer(String gamerId) ;
+    ResponseEntity<List<RetrieveGamerResponse>> retrieveAllGamers();
+
+    void archiveGamer(String gamerId);
+
+    ResponseEntity<Boolean> emailExists(final String emailAddress);
+
+
 }

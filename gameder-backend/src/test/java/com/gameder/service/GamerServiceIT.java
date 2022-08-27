@@ -8,14 +8,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
 public class GamerServiceIT {
 
@@ -35,7 +38,7 @@ public class GamerServiceIT {
 
     private Gamer createGamer() {
         final Gamer gamer = new Gamer(null,"NewGamer", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
 
         final Gamer returnedGamer = gamerService.createGamer(gamer);
 
@@ -45,6 +48,7 @@ public class GamerServiceIT {
         assertEquals(returnedGamer.getEmailAddress(), gamer.getEmailAddress());
         assertEquals(returnedGamer.getIntroductionText(), gamer.getIntroductionText());
         assertEquals(returnedGamer.getTelephoneNumber(), gamer.getTelephoneNumber());
+        assertEquals(returnedGamer.getPassword(), gamer.getPassword());
 
         return returnedGamer;
     }
@@ -56,7 +60,7 @@ public class GamerServiceIT {
         final Gamer createdGamer = createGamer();
 
         final Gamer gamer = new Gamer(createdGamer.getId(),"NewGamerUpdated", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
 
         final Gamer returnedGamer = gamerService.updateGamer(gamer);
 
@@ -67,6 +71,7 @@ public class GamerServiceIT {
         assertEquals(returnedGamer.getEmailAddress(), gamer.getEmailAddress());
         assertEquals(returnedGamer.getIntroductionText(), gamer.getIntroductionText());
         assertEquals(returnedGamer.getTelephoneNumber(), gamer.getTelephoneNumber());
+        assertEquals(returnedGamer.getPassword(), gamer.getPassword());
 
         log.info("testUpdateGamer {}", returnedGamer);
     }
@@ -76,14 +81,14 @@ public class GamerServiceIT {
         log.info("testUpdateGamer");
 
         final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
 
         try {
             gamerService.updateGamer(gamer);
 
             fail("EntityNotFoundException NOT thrown as expected");
 
-        } catch (EntityNotFoundException exception) {
+        } catch (final EntityNotFoundException exception) {
             log.info("EntityNotFoundException thrown as expected" );
         }
 
@@ -102,6 +107,23 @@ public class GamerServiceIT {
 
         log.info("testRetrieveGamer {}", returnedGamer);
     }
+
+    @Test
+    public void testRetrieveAllGamers() {
+        log.info("testRetrieveAllGamers");
+
+        final Gamer createdGamer = createGamer();
+
+        final List<Gamer> returnedGamer = gamerService.retrieveAllGamers();
+
+        log.info("Gamers all: " + returnedGamer);
+
+        assertNotNull(returnedGamer);
+        assertTrue(returnedGamer.size() == 1);
+
+        log.info("testRetrieveGamer {}", returnedGamer);
+    }
+
 
     @Test
     public void testRetrieveGamerNotFound() {
@@ -145,4 +167,20 @@ public class GamerServiceIT {
 
         log.info("testArchiveGamerNotFound");
     }
+
+
+
+    @Test
+    public void testEmailExists() {
+        log.info("testEmailExists");
+
+        final Gamer createdGamer = createGamer();
+
+        final Boolean emailExists = gamerService.emailExists("gamer@gamers.com");
+
+         assertTrue(emailExists);
+
+        log.info("testEmailExists {}", emailExists);
+    }
+
 }

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "api/gamer")
 public class GamerControllerImpl implements GamerController {
@@ -48,6 +50,17 @@ public class GamerControllerImpl implements GamerController {
         return new ResponseEntity<>(retrieveGamerResponse, HttpStatus.OK);
     }
 
+    @GetMapping(path="/all")
+    public ResponseEntity<List<RetrieveGamerResponse>> retrieveAllGamers() {
+        log.info("retrieveAllGamers");
+
+        final List<Gamer> gamers = gamerService.retrieveAllGamers();
+        final List<RetrieveGamerResponse> retrieveAllGamersResponse = GamerConverter.toRetrieveGamerResponse(gamers);
+
+        log.info("retrieveAllGamers {}" , retrieveAllGamersResponse);
+        return new ResponseEntity<>(retrieveAllGamersResponse, HttpStatus.OK);
+    }
+
     @PostMapping(path="/update")
     public ResponseEntity<UpdateGamerResponse> updateGamer(@RequestBody UpdateGamerRequest updateGamerRequest) {
         log.info("updateGamer {}", updateGamerRequest);
@@ -68,4 +81,16 @@ public class GamerControllerImpl implements GamerController {
 
         log.info("archiveGamer  ");
     }
+
+    @GetMapping(path="/emailExists")
+    public ResponseEntity<Boolean> emailExists(@RequestParam("emailAddress") final String emailAddress) {
+        log.info("emailExists");
+
+        final Boolean emailExists = gamerService.emailExists(emailAddress);
+
+        log.info("emailExists {}" , emailExists);
+
+        return new ResponseEntity<>(emailExists, HttpStatus.OK);
+    }
+
 }

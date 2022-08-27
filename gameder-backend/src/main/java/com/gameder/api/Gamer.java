@@ -11,13 +11,14 @@ public class Gamer {
     private String telephoneNumber;
     private byte[] profileImage;
     private String introductionText;
+    private String password;
 
 
     public Gamer() {
         super();
     }
 
-    public Gamer(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImage, String introductionText) {
+    public Gamer(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImage, String introductionText, String password) {
         this.id = id;
         this.displayName = displayName;
         this.dateOfBirth = dateOfBirth;
@@ -25,6 +26,7 @@ public class Gamer {
         this.telephoneNumber = telephoneNumber;
         this.profileImage = profileImage;
         this.introductionText = introductionText;
+        this.password = password;
     }
 
     public String getEmailAddress() {
@@ -83,6 +85,13 @@ public class Gamer {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     @Override
     public String toString() {
         return "Gamer{" +

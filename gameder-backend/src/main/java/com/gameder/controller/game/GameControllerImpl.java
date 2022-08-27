@@ -1,7 +1,10 @@
 package com.gameder.controller.game;
 
 import com.gameder.api.Game;
+import com.gameder.api.Gamer;
 import com.gameder.api.game.*;
+import com.gameder.api.gamer.RetrieveGamerResponse;
+import com.gameder.controller.gamer.GamerConverter;
 import com.gameder.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/game")
@@ -46,6 +51,17 @@ public class GameControllerImpl implements GameController {
 
         log.info("retrieveGame {}" , retrieveGameResponse);
         return new ResponseEntity<>(retrieveGameResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(path="/all")
+    public ResponseEntity<List<RetrieveGameResponse>> retrieveAllGames() {
+        log.info("retrieveAllGames");
+
+        final List<Game> games = gameService.retrieveAllGames();
+        final List<RetrieveGameResponse> retrieveAllGamesResponse = GameConverter.toRetrieveGameResponse(games);
+
+        log.info("retrieveAllGames {}" , retrieveAllGamesResponse);
+        return new ResponseEntity<>(retrieveAllGamesResponse, HttpStatus.OK);
     }
 
     @PostMapping(path="/update")

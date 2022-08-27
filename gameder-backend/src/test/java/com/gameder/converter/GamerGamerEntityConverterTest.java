@@ -7,10 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Gamer To Entity test
@@ -37,6 +38,29 @@ public class GamerGamerEntityConverterTest {
 
         log.info("toGamerTest {}", gamer);
     }
+
+    @Test
+    public void toGamerListTest() {
+        GamerEntity gamerEntity = createGamerEntity();
+        log.info("toGamerTest {}", gamerEntity);
+
+        List<GamerEntity> gamerEntities = Collections.singletonList(gamerEntity);
+
+        final List<Gamer> allGamers = GamerGamerEntityConverter.toGamer(gamerEntities);
+
+        assertTrue( allGamers.size() == 1,"List must have one element");
+        Gamer gamer = allGamers.get(0);
+        assertNotNull(gamer.getId());
+        assertEquals(gamer.getId(), gamerEntity.getId());
+        assertEquals(gamer.getDateOfBirth(), gamerEntity.getDateOfBirth());
+        assertEquals(gamer.getDisplayName(), gamerEntity.getDisplayName());
+        assertEquals(gamer.getEmailAddress(), gamerEntity.getEmailAddress());
+        assertEquals(gamer.getIntroductionText(), gamerEntity.getIntroductionText());
+        assertEquals(gamer.getTelephoneNumber(), gamerEntity.getTelephoneNumber());
+
+        log.info("toGamerTest {}", gamer);
+    }
+
 
     @Test
     public void toGamerEntityTest() {

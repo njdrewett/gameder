@@ -1,7 +1,9 @@
 package com.gameder.service;
 
 import com.gameder.api.Game;
+import com.gameder.api.Gamer;
 import com.gameder.domain.GameEntity;
+import com.gameder.domain.GamerEntity;
 import com.gameder.repository.GameRepository;
 import com.gameder.service.game.GameServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -160,6 +164,32 @@ public class GameServiceTest {
       gameService.archiveGame("1");
 
       log.info("testArchiveGame");
+   }
+
+   @Test
+   public void testRetrieveAllGames() {
+      log.info("testRetrieveAllGames");
+
+      final Game game = new Game("1","NewGame", 18,
+              null, "Hi Im a game");
+
+      final GameEntity persistedGameEntity = persistedGameEntity(game);
+
+      Mockito.when(gameRepository.findAll()).thenReturn(Collections.singletonList(persistedGameEntity));
+
+      final List<Game> returnedGames = gameService.retrieveAllGames();
+
+      assertNotNull(returnedGames);
+      assertTrue(returnedGames.size() == 1);
+      Game returnedGame = returnedGames.get(0);
+      assertNotNull(returnedGame.getId());
+      assertEquals(returnedGame.getId(), persistedGameEntity.getId());
+      assertEquals(returnedGame.getDescriptionText(), game.getDescriptionText());
+      assertEquals(returnedGame.getDisplayName(), game.getDisplayName());
+      assertEquals(returnedGame.getAgeRestriction(), game.getAgeRestriction());
+      assertEquals(returnedGame.getGameImage(), game.getGameImage());
+
+      log.info("testRetrieveGame {}", returnedGame);
    }
 
    @Test

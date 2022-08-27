@@ -1,7 +1,9 @@
 package com.gameder.controller.game;
 
 import com.gameder.api.Game;
+import com.gameder.api.Gamer;
 import com.gameder.api.game.*;
+import com.gameder.api.gamer.RetrieveGamerResponse;
 import com.gameder.controller.game.GameController;
 import com.gameder.controller.game.GameControllerImpl;
 import com.gameder.service.GameService;
@@ -16,7 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -129,6 +133,21 @@ public class GameControllerTest {
         log.info("testRetrieveGame ");
     }
 
+    @Test
+    public void testRetrieveAllGames() {
+        log.info("testRetrieveAllGames");
+
+        final Game game = new Game("1","NewGameDisplayName",18,
+                null,"This is a new Game" );
+
+        Mockito.when(gameService.retrieveAllGames()).thenReturn(Collections.singletonList(game));
+
+        final ResponseEntity<List<RetrieveGameResponse>> returnedGame = gameController.retrieveAllGames();
+
+        assertNotNull(returnedGame.getBody());
+
+        log.info("testRetrieveAllGames {}", returnedGame);
+    }
     @Test
     public void testArchiveGame() {
         log.info("testArchiveGame");

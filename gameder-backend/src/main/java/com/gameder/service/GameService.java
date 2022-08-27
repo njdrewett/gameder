@@ -2,6 +2,9 @@ package com.gameder.service;
 
 
 import com.gameder.api.Game;
+import com.gameder.api.Gamer;
+
+import java.util.List;
 
 public interface GameService {
 
@@ -18,6 +21,12 @@ public interface GameService {
      * @return
      */
     Game retrieveGame(final String identifier);
+
+    /**
+     * Retrieve all existing, non-archived Gamers
+     * @return
+     */
+    List<Game> retrieveAllGames();
 
     /**
      * Update an existing Game entity

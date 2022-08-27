@@ -9,17 +9,19 @@ public class CreateGamerRequest {
     private Date dateOfBirth;
     private String telephoneNumber;
     private byte[] profileImage;
+    private String password;
 
     public CreateGamerRequest() {
     }
 
-    public CreateGamerRequest(String displayName, Date dateOfBirth,  String emailAddress,String telephoneNumber, byte[] profileImage, String introductionText) {
+    public CreateGamerRequest(String displayName, Date dateOfBirth,  String emailAddress,String telephoneNumber, byte[] profileImage, String introductionText,String password) {
         this.displayName = displayName;
         this.dateOfBirth = dateOfBirth;
         this.telephoneNumber = telephoneNumber;
         this.profileImage = profileImage;
         this.introductionText = introductionText;
         this.emailAddress = emailAddress;
+        this.password = password;
     }
 
     private String introductionText;
@@ -95,4 +97,11 @@ public class CreateGamerRequest {
         return Objects.hash(displayName, dateOfBirth);
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

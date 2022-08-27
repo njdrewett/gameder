@@ -24,6 +24,9 @@ public class GamerEntity {
     private String introductionText;
     private boolean archived;
 
+    // Unsecure. Only till OAuth capability is implemented, for testing functionality
+    private String password;
+
 
     public GamerEntity() {
     }
@@ -90,5 +93,13 @@ public class GamerEntity {
 
     public boolean isArchived() {
         return archived;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

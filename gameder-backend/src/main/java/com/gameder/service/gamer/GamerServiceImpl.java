@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class GamerServiceImpl extends GamerServiceBase {
@@ -53,6 +54,21 @@ public class GamerServiceImpl extends GamerServiceBase {
     }
 
     @Override
+    @Transactional(Transactional.TxType.NOT_SUPPORTED)
+    public List<Gamer> retrieveAllGamers() {
+        log.info("Entering retrieveAllGamers");
+
+        final List<GamerEntity> gamerEntities = getGamerRepository().findAll();
+
+        final List<Gamer> gamerResponse = GamerGamerEntityConverter.toGamer(gamerEntities);
+
+        log.info("Exiting retrieveAllGamers: ");
+
+        return gamerResponse;
+
+    }
+
+    @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public Gamer updateGamer(final Gamer gamer) {
         log.info("Entering updateGamer: {}",gamer);
@@ -75,6 +91,7 @@ public class GamerServiceImpl extends GamerServiceBase {
     public void archiveGamer(String identifier) {
         log.info("Entering archiveGamer: {}",identifier);
 
+        // Should change all finders and dao methods to only return non-archived entities.
         final GamerEntity foundGamerEntity = getGamerRepository().findById(identifier).orElseThrow(EntityNotFoundException::new);
 
         foundGamerEntity.setArchived(true);
@@ -83,4 +100,19 @@ public class GamerServiceImpl extends GamerServiceBase {
 
         log.info("Exiting archiveGame" );
     }
+
+    @Override
+    @Transactional(Transactional.TxType.NOT_SUPPORTED)
+    public Boolean emailExists(final String emailAddress) {
+        log.info("Entering emailExists: {}",emailAddress);
+
+        final List<GamerEntity> gamerEntities = getGamerRepository().findByEmailAddress(emailAddress);
+
+        final Boolean emailExists = !gamerEntities.isEmpty();
+
+        log.info("Exiting retrieveGamer: {}" , emailExists);
+
+        return emailExists;
+    }
+
 }

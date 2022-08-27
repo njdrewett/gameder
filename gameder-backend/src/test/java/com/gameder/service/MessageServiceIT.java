@@ -43,11 +43,11 @@ public class MessageServiceIT {
     private Message createMessage() {
 
         final Gamer gamerFrom = new Gamer(null,"NewGamerFrom", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer","password");
         final Gamer returnedGamerFrom = gamerService.createGamer(gamerFrom);
 
         final Gamer gamerTo = new Gamer(null,"NewGamerTo", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer");
+                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer","password");
         final Gamer returnedGamerTo = gamerService.createGamer(gamerTo);
 
         final Message message = new Message(null,"NewMessageUpdated", null, null,gamerFrom.getId(), gamerTo.getId());
