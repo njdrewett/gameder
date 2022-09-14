@@ -244,4 +244,24 @@ public class GamerServiceTest {
 
       log.info("testEmailExists");
    }
+
+//   @Test
+//   public void testLogin() {
+//      log.info("testLogin");
+//
+//      final Gamer gamer = new Gamer(null,"NewGamer", new Date(1656366879731L),
+//              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
+//
+//      final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
+//      final List<GamerEntity> gamers = Collections.singletonList(persistedGamerEntity);
+//
+//      Mockito.when(gamerRepository.findByEmailAddressAndPassword("gamer@gamers.com","password")).thenReturn(gamers);
+//
+//      Boolean result = gamerService.login("gamer@gamers.com","password");
+//
+//      assertTrue(result);
+//
+//      log.info("testLogin");
+//   }
+
 }

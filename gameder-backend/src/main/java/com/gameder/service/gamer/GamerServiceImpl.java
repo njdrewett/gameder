@@ -114,5 +114,4 @@ public class GamerServiceImpl extends GamerServiceBase {
 
         return emailExists;
     }
-
 }

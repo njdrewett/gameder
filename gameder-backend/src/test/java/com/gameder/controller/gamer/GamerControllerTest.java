@@ -173,4 +173,18 @@ public class GamerControllerTest {
 
         log.info("testEmailExists");
     }
+
+//    @Test
+//    public void testLogin() {
+//        log.info("testLogin");
+//
+//        Mockito.when(gamerService.login("test@emailAddress.com", "password")).thenReturn(Boolean.TRUE);
+//
+//        ResponseEntity<Boolean> result = gamerController.login("test@emailAddress.com","password");
+//
+//        final Boolean body = result.getBody();
+//        assertTrue(body);
+//
+//        log.info("testLogin");
+//    }
 }

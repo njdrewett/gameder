@@ -11,4 +11,6 @@ import java.util.List;
 public interface GamerRepository extends JpaRepository<GamerEntity, String> {
 
     List<GamerEntity> findByEmailAddress(final String emailAddress);
+
+    List<GamerEntity> findByEmailAddressAndPassword(final String emailAddress, final String password);
 }

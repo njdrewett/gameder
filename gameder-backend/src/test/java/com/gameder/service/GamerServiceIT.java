@@ -168,8 +168,6 @@ public class GamerServiceIT {
         log.info("testArchiveGamerNotFound");
     }
 
-
-
     @Test
     public void testEmailExists() {
         log.info("testEmailExists");
@@ -182,5 +180,18 @@ public class GamerServiceIT {
 
         log.info("testEmailExists {}", emailExists);
     }
+
+//    @Test
+//    public void testLogin() {
+//        log.info("testLogin");
+//
+//        final Gamer createdGamer = createGamer();
+//
+//        final Boolean login = gamerService.login("gamer@gamers.com", "password");
+//
+//        assertTrue(login);
+//
+//        log.info("testLogin {}", login);
+//    }
 
 }

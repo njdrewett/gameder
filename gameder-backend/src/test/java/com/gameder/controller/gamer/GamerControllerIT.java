@@ -183,4 +183,17 @@ public class GamerControllerIT {
         log.info("testEmailExists");
     }
 
+//    @Test
+//    public void testLogin() {
+//        log.info("testLogin");
+//
+//        final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
+//
+//        final ResponseEntity<Boolean> result = gamerController.login("gamer@gamers.com", "password");
+//
+//        final Boolean body = result.getBody();
+//        assertTrue(body);
+//
+//        log.info("testLogin");
+//    }
 }

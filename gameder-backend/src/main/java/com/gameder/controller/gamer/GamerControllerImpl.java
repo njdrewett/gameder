@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(path = "api/gamer")
 public class GamerControllerImpl implements GamerController {
@@ -51,6 +53,7 @@ public class GamerControllerImpl implements GamerController {
     }
 
     @GetMapping(path="/all")
+    @PreAuthorize("hasAuthority('gamer')")
     public ResponseEntity<List<RetrieveGamerResponse>> retrieveAllGamers() {
         log.info("retrieveAllGamers");
 
@@ -84,7 +87,7 @@ public class GamerControllerImpl implements GamerController {
 
     @GetMapping(path="/emailExists")
     public ResponseEntity<Boolean> emailExists(@RequestParam("emailAddress") final String emailAddress) {
-        log.info("emailExists");
+        log.info("emailExists {}", emailAddress);
 
         final Boolean emailExists = gamerService.emailExists(emailAddress);
 
@@ -92,5 +95,8 @@ public class GamerControllerImpl implements GamerController {
 
         return new ResponseEntity<>(emailExists, HttpStatus.OK);
     }
+
+
+
 
 }
