@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import bcrypt, { hashSync } from 'bcryptjs'
+import { hashSync } from 'bcryptjs'
 import { useCookies } from 'react-cookie'
 
 const AuthModal = ({ setShowAuthModal, isSignUp }) => {
@@ -13,7 +13,7 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
     const [userId, setUserId] = useState(null)
     const [jwToken, setJwToken] = useState(null)
 
-
+ 
     let navigate = useNavigate()
 
     const handleAuthModalClick = () => {
@@ -43,7 +43,8 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
             const emailLower = email.toLowerCase()
             const passwordHashed = hashSync(password,10)
             const signup = "http://localhost:8080/api/auth/signup";
-
+    
+            // Attempt to signup
             fetch(signup, {
                 method: "POST",
                 headers: {
@@ -52,117 +53,59 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
                 body: JSON.stringify({emailAddress: emailLower , password: passwordHashed})
             })
                 .then(res => res.json())
-                .then(exists => {
-                    console.log(exists);
-                    var success = !exists;
-                    console.log(success);
-                    if (success) {
-
-    //                    createNewGamer(emailLower, passwordHashed);
-
-                        navigate('/onboarding');
+                .then(res => {
+                    console.log(res)
+                    if(res.signupSuccessful) {
+                        console.log("signup success")
+                        setUserId(res.userId)
+                        setJwToken(res.jwToken)
+                        setCookie("userId",res.userId)
+                        setCookie("jwToken", res.jwToken)
+                        navigate('/onboarding')
                     } else {
-                        console.log("User email already exists");
-                        setError("User email already exists");
+                        setError(res.errorMessage)
                     }
                 })
                 .catch(console.log);
 
-            console.log("Post request for signup or login");
+            console.log("Post request for signup");
         }
 
         function performLogin() {
-            if (password !== confirmedPassword) {
-                setError("Passwords need to match");
-            }
 
-            console.log("email: " + email + ", password: " + password + ", confirm password: " + password);
+            console.log("email: " + email + ", password: " + password );
 
             const emailLower = email.toLowerCase()
-            const passwordHashed = hashSync(password,10)
-            const gamersEmailExists = "http://localhost:8080/api/gamer/emailExists?emailAddress=" + emailLower;
-
-            fetch(gamersEmailExists, {
-                method: "GET",
+ 
+            const login = "http://localhost:8080/api/auth/login";
+ 
+            // Attempt to signup
+            fetch(login, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
-                }
+                },
+                body: JSON.stringify({emailAddress: emailLower , password: password})
             })
                 .then(res => res.json())
-                .then(exists => {
-                    console.log(exists);
-                    var success = exists;
-                    console.log(success);
-                    if (success) {
-
-                        let created = loginGamer(emailLower,passwordHashed);
-
-                        if(created) {
-                            navigate('/dashboard');
-                        } else {
-                            console.log("Error creating gamer")
-                        }
+                .then(res => {
+                    console.log(res)
+                    if(res.loginSuccessful) {
+                        console.log("login success")
+                        setUserId(res.userId)
+                        setJwToken(res.jwToken)
+                        setCookie("userId",res.userId)
+                        setCookie("jwToken", res.jwToken)
+                        navigate('/dashboard')
                     } else {
-                        console.log("User email not found");
-                        setError("User email not found");
+                        setError(res.errorMessage)
                     }
+                     
                 })
                 .catch(console.log);
-
-            console.log("Post request for signup or login");
+            console.log("Post request for login");
         }
 
-    }
-
-    const createNewGamer = async (emailAddress, passwordHashed) => {
-        console.log("Creating user with email: " + emailAddress + " &, password: " + password);
-
-        //should always store a hashed password. 
-        const gamersEmailExists = "http://localhost:8080/api/gamer"
-        let success = false
-        fetch(gamersEmailExists, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ emailAddress: email, password: passwordHashed })
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                setCookie('email', emailAddress)
-                setCookie('userId', data.id)
-                success = true
-                console.log(data)
-            })
-            .catch(console.log)
-        return success
-    }
-
-    const loginGamer = async (emailAddress,passwordHashed) => {
-        console.log("Creating user with email: " + emailAddress + " &, password: " + password);
-
-        //should always store a hashed password. 
-        const gamersEmailExists = "http://localhost:8080/api/gamer"
-        let success = false;
-        fetch(gamersEmailExists, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ emailAddress: email, password: passwordHashed })
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                success = data
-                setCookie('email', emailAddress)
-                setCookie('userId', data.id)
-                console.log(data)
-            })
-            .catch(console.log)
-
-        return success
     }
 
     return (

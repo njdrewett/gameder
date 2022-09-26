@@ -14,4 +14,6 @@ Includes:
 
 ![image ](frontPage.png)
 
+![image ](dashboard.png)
+
 
