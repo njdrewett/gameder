@@ -8,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityNotFoundException;
@@ -71,11 +73,19 @@ public class GamerControllerIT {
     public void testUpdateGamer() {
         log.info("testUpdateGamer");
 
+        MockMultipartFile file
+                = new MockMultipartFile(
+                "file",
+                "hello.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "Hello, World!".getBytes()
+        );
+
         final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
         final UpdateGamerRequest updateGamerRequest =
                 new UpdateGamerRequest(returnedGamer.getBody().getId(), "NewGamer", new Date(1656366879731L),
                         "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
-        final ResponseEntity<UpdateGamerResponse> returnedUpdateGamer = gamerController.updateGamer(updateGamerRequest);
+        final ResponseEntity<UpdateGamerResponse> returnedUpdateGamer = gamerController.updateGamer(updateGamerRequest, file);
 
         final UpdateGamerResponse body = returnedUpdateGamer.getBody();
         assertTrue(body.getSuccess());
@@ -88,10 +98,18 @@ public class GamerControllerIT {
     public void testUpdateGamerNotExists() {
         log.info("testUpdateGamerNotExists");
 
+        MockMultipartFile file
+                = new MockMultipartFile(
+                "file",
+                "hello.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "Hello, World!".getBytes()
+        );
+
         final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("2", "NewGamer", new Date(1656366879731L),
                 "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         try {
-            gamerController.updateGamer(updateGamerRequest);
+            gamerController.updateGamer(updateGamerRequest,file);
             fail("EntityNotFoundException should have been thrown ");
         } catch (EntityNotFoundException exception) {
             log.info("EntityNotFoundException thrown as expected" );

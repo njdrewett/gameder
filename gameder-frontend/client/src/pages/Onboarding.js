@@ -2,24 +2,78 @@
 import Nav from "../components/Nav"
 import { useState } from 'react'
 import defaultProfileData from '../images/placeholder.png'
-
+import { useCookies } from 'react-cookie'
+import { useNavigate } from "react-router-dom";
 
 const Onboarding = () => {
+    
+    let navigate = useNavigate()
 
+    const [error, setError] = useState(null);
+    const [cookies, setCookie, removeCookie] = useCookies(null)
     const [formData, setFormData] = useState({
+        id: cookies.userId,
         displayName: '',
         dateOfBirth: '',
-        emailAddress:'',
         telephoneNumber:'',
-        introductionText:''        
+        introductionText:''
     })
 
     const [profileData, setProfileData] = useState({
         profileData:''
     })
+ 
+    const [profileFile, setProfileFile] = useState({
+        profileFile:null
+    })
 
-    const handleSubmit = () => {
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault()
         console.log("Submitted")
+
+        const updateLink = "http://localhost:8080/api/gamer/update"
+    
+        try {
+
+            let submitFormData = new FormData();
+            const json = JSON.stringify({
+                id: formData.id ,
+                displayName: formData.displayName,
+                dateOfBirth: formData.dateOfBirth,
+                telephoneNumber: formData.telephoneNumber,
+                introductionText: formData.introductionText
+            })
+            const blob = new Blob([json], {
+                type: 'application/json'
+              });
+              
+              submitFormData.append('updateGamerRequest',blob)
+              submitFormData.append('profileImage',profileFile )
+
+        // Attempt to signup
+        fetch(updateLink, {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + cookies.jwToken
+            },
+            body: submitFormData
+        })
+        .then(res => res.json())
+        .then(res => {
+            console.log(res)
+            if(res.success) {
+                console.log("signup success")
+                navigate('/dashboard')
+            } else {
+                setError(res.errorMessage)
+            }
+        })
+        .catch(console.log);
+    } catch (error) {
+        console.log(error)
+    }
+
     }
     
     const handleChange = (e) => {
@@ -66,15 +120,6 @@ const Onboarding = () => {
                             value={formData.dateOfBirth}
                             onChange={handleChange}
                         />
-                        <label htmlFor="emailAddress">Email Address:</label>
-                        <input id="emailAddress"
-                            type="email"
-                            name="emailAddress"
-                            placeholder="Email Address"
-                            required={true}
-                            value={formData.emailAddress}
-                            onChange={handleChange}
-                        />
                         <label htmlFor="telephoneNumber">Telephone Number:</label>
                         <input id="telephoneNumber"
                             type="tel"
@@ -103,12 +148,15 @@ const Onboarding = () => {
                             name="profileImage"
                             placeholder="Profile Image"
                             required={false}
-                            value={formData.profileImage}
-                            onChange={(e) => setProfileData(URL.createObjectURL(e.target.files[0]))}
+                            value={formData.profileImageFile}
+                            onChange={(e) => {
+                                setProfileData(URL.createObjectURL(e.target.files[0]) )
+                                setProfileFile(e.target.files[0]) 
+                            }}
                         />
                         
                         <div className="profile-container">
-                            <img src={  profileData.profileData != '' ? profileData : defaultProfileData } alt="Profile Image Preview"/>
+                             <img src={  profileData.profileData != '' ? profileData : defaultProfileData } alt="Profile Image Preview"/>
                         </div>
 
                     </section>

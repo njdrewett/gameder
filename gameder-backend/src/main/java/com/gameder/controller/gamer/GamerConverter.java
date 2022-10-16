@@ -4,6 +4,7 @@ import com.gameder.api.Gamer;
 import com.gameder.api.gamer.CreateGamerRequest;
 import com.gameder.api.gamer.RetrieveGamerResponse;
 import com.gameder.api.gamer.UpdateGamerRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,19 +15,19 @@ public class GamerConverter {
     public static Gamer toGamer(final CreateGamerRequest createGamerRequest) {
         return new Gamer(null, createGamerRequest.getDisplayName(), createGamerRequest.getDateOfBirth(),
                 createGamerRequest.getEmailAddress(),createGamerRequest.getTelephoneNumber(),
-                createGamerRequest.getProfileImage(),createGamerRequest.getIntroductionText(), createGamerRequest.getPassword());
+                null,createGamerRequest.getIntroductionText(), createGamerRequest.getPassword());
     }
 
-    public static Gamer toGamer(final UpdateGamerRequest updateGamerRequest) {
+    public static Gamer toGamer(final UpdateGamerRequest updateGamerRequest, byte[] profileImageData, String profileImageContentType) {
         return new Gamer(updateGamerRequest.getId(), updateGamerRequest.getDisplayName(),
                 updateGamerRequest.getDateOfBirth(),updateGamerRequest.getEmailAddress(),
-                updateGamerRequest.getTelephoneNumber(),updateGamerRequest.getProfileImage(),
-                updateGamerRequest.getIntroductionText(), updateGamerRequest.getPassword());
+                updateGamerRequest.getTelephoneNumber(),profileImageData,profileImageContentType,
+                updateGamerRequest.getIntroductionText());
     }
 
     public static RetrieveGamerResponse toRetrieveGamerResponse(final Gamer gamer) {
         return new RetrieveGamerResponse(gamer.getId(), gamer.getDisplayName(), gamer.getDateOfBirth(),
-                gamer.getEmailAddress(),gamer.getTelephoneNumber(),gamer.getProfileImage(),gamer.getIntroductionText());
+                gamer.getEmailAddress(),gamer.getTelephoneNumber(),gamer.getIntroductionText());
     }
 
     public static List<RetrieveGamerResponse> toRetrieveGamerResponse(final List<Gamer> gamers) {

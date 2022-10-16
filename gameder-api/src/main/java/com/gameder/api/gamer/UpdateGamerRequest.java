@@ -8,7 +8,9 @@ public class UpdateGamerRequest {
     private String id;
     private String displayName;
     private Date dateOfBirth;
-    private String password;
+    private String telephoneNumber;
+    private String introductionText;
+    private String emailAddress;
 
     public UpdateGamerRequest(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImage, String introductionText, String password) {
         this.id = id;
@@ -16,12 +18,9 @@ public class UpdateGamerRequest {
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
         this.telephoneNumber = telephoneNumber;
-        this.profileImage = profileImage;
         this.introductionText = introductionText;
-        this.password = password;
     }
 
-    private String emailAddress;
 
     public String getEmailAddress() {
         return emailAddress;
@@ -39,14 +38,6 @@ public class UpdateGamerRequest {
         this.telephoneNumber = telephoneNumber;
     }
 
-    public byte[] getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(byte[] profileImage) {
-        this.profileImage = profileImage;
-    }
-
     public String getIntroductionText() {
         return introductionText;
     }
@@ -55,13 +46,8 @@ public class UpdateGamerRequest {
         this.introductionText = introductionText;
     }
 
-    private String telephoneNumber;
-    private byte[] profileImage;
-    private String introductionText;
-
     public UpdateGamerRequest() {
     }
-
 
     public String getId() {
         return id;
@@ -85,14 +71,6 @@ public class UpdateGamerRequest {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override

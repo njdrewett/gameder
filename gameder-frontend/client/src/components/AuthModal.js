@@ -9,7 +9,7 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
     const [password, setPassword] = useState(null);
     const [confirmedPassword, setConfirmedPassword] = useState(null)
     const [error, setError] = useState(null);
-    const [cookie, setCookie, removeCookie] = useCookies(null)
+    const [cookies, setCookie, removeCookie] = useCookies(null)
     const [userId, setUserId] = useState(null)
     const [jwToken, setJwToken] = useState(null)
 
@@ -21,7 +21,7 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         try {
             if (isSignUp) {
                 performSignup()
@@ -60,6 +60,7 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
                         setUserId(res.userId)
                         setJwToken(res.jwToken)
                         setCookie("userId",res.userId)
+                        setCookie("emailAddress",emailLower)
                         setCookie("jwToken", res.jwToken)
                         navigate('/onboarding')
                     } else {
@@ -95,6 +96,7 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
                         setUserId(res.userId)
                         setJwToken(res.jwToken)
                         setCookie("userId",res.userId)
+                        setCookie("emailAddress",emailLower)
                         setCookie("jwToken", res.jwToken)
                         navigate('/dashboard')
                     } else {

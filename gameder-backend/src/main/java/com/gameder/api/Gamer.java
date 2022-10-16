@@ -1,5 +1,7 @@
 package com.gameder.api;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Date;
 
 public class Gamer {
@@ -9,7 +11,10 @@ public class Gamer {
     private Date dateOfBirth;
     private String emailAddress;
     private String telephoneNumber;
-    private byte[] profileImage;
+
+
+    private byte[] profileImageData;
+    private String profileImageContentType;
     private String introductionText;
     private String password;
 
@@ -18,15 +23,20 @@ public class Gamer {
         super();
     }
 
-    public Gamer(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImage, String introductionText, String password) {
+    public Gamer(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImageData, String profileImageContentType, String introductionText, String password) {
+        this(id,displayName,dateOfBirth,emailAddress,telephoneNumber,profileImageData, profileImageContentType, introductionText);
+        this.password = password;
+    }
+
+    public Gamer(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImageData, String profileImageContentType, String introductionText) {
         this.id = id;
         this.displayName = displayName;
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
         this.telephoneNumber = telephoneNumber;
-        this.profileImage = profileImage;
+        this.profileImageData = profileImageData;
+        this.profileImageContentType = profileImageContentType;
         this.introductionText = introductionText;
-        this.password = password;
     }
 
     public String getEmailAddress() {
@@ -43,14 +53,6 @@ public class Gamer {
 
     public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
-    }
-
-    public byte[] getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(byte[] profileImage) {
-        this.profileImage = profileImage;
     }
 
     public String getIntroductionText() {
@@ -92,6 +94,23 @@ public class Gamer {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public byte[] getProfileImageData() {
+        return profileImageData;
+    }
+
+    public void setProfileImageData(byte[] profileImageData) {
+        this.profileImageData = profileImageData;
+    }
+
+    public String getProfileImageContentType() {
+        return profileImageContentType;
+    }
+
+    public void setProfileImageContentType(String profileImageContentType) {
+        this.profileImageContentType = profileImageContentType;
+    }
+
     @Override
     public String toString() {
         return "Gamer{" +

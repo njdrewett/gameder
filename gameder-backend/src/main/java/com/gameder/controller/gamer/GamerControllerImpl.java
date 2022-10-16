@@ -7,10 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -41,8 +44,8 @@ public class GamerControllerImpl implements GamerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(path="{gamerId}")
-    public ResponseEntity<RetrieveGamerResponse> retrieveGamer(@PathVariable("gamerId") String gamerId) {
+    @GetMapping(path="/{gamerId}")
+    public ResponseEntity<RetrieveGamerResponse> retrieveGamer(@PathVariable(name = "gamerId") String gamerId) {
         log.info("retrieveGamer {} ", gamerId);
 
         final Gamer gamer = gamerService.retrieveGamer(gamerId);
@@ -53,7 +56,6 @@ public class GamerControllerImpl implements GamerController {
     }
 
     @GetMapping(path="/all")
-    @PreAuthorize("hasAuthority('gamer')")
     public ResponseEntity<List<RetrieveGamerResponse>> retrieveAllGamers() {
         log.info("retrieveAllGamers");
 
@@ -64,16 +66,23 @@ public class GamerControllerImpl implements GamerController {
         return new ResponseEntity<>(retrieveAllGamersResponse, HttpStatus.OK);
     }
 
-    @PostMapping(path="/update")
-    public ResponseEntity<UpdateGamerResponse> updateGamer(@RequestBody UpdateGamerRequest updateGamerRequest) {
+    @PostMapping(path="/update", consumes=MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UpdateGamerResponse> updateGamer(@RequestPart(name = "updateGamerRequest") UpdateGamerRequest updateGamerRequest, @RequestPart(name="profileImage") MultipartFile profileImage) {
         log.info("updateGamer {}", updateGamerRequest);
 
-        final Gamer gamer = GamerConverter.toGamer(updateGamerRequest);
-        final Gamer gamerResponse = gamerService.updateGamer(gamer);
-        final UpdateGamerResponse updateGamerResponse = new UpdateGamerResponse(gamerResponse.getId(), true);
+
+        final UpdateGamerResponse updateGamerResponse = new UpdateGamerResponse(null, false);
+        try {
+            final Gamer gamer = GamerConverter.toGamer(updateGamerRequest, profileImage.getBytes(), profileImage.getContentType());
+            final Gamer gamerResponse = gamerService.updateGamer(gamer);
+            updateGamerResponse.setId(gamerResponse.getId());
+            updateGamerResponse.setSuccess(true);
+        } catch (IOException e) {
+           log.error("Exception with image data ", e);
+        }
 
         log.info("updateGamer {}", updateGamerResponse);
-        return new ResponseEntity<>(updateGamerResponse, HttpStatus.OK);
+        return new ResponseEntity<>(updateGamerResponse, updateGamerResponse.getSuccess()? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping(path="{gamerId}")
@@ -96,6 +105,15 @@ public class GamerControllerImpl implements GamerController {
         return new ResponseEntity<>(emailExists, HttpStatus.OK);
     }
 
+    @GetMapping(path="/profileImage/{gamerId}")
+    public ResponseEntity<?> retrieveProfileImage(@PathVariable(name = "gamerId") String gamerId) {
+        log.info("retrieveProfileImage {} ", gamerId);
+
+        final Gamer gamer = gamerService.retrieveGamer(gamerId);
+
+        log.info("retrieveProfileImage {}" );
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf(gamer.getProfileImageContentType())).body(gamer.getProfileImageData());
+    }
 
 
 

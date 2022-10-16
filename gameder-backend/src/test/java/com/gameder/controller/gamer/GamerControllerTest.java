@@ -11,7 +11,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
@@ -61,6 +63,13 @@ public class GamerControllerTest {
     @Test
     public void testUpdateGamer() {
         log.info("testUpdateGamer");
+        MockMultipartFile file
+                = new MockMultipartFile(
+                "file",
+                "hello.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "Hello, World!".getBytes()
+        );
 
         final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
                 "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
@@ -69,7 +78,7 @@ public class GamerControllerTest {
         final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("1", "NewGamer",
                 new Date(1656366879731L),"gamer@gamers.com", "019191999991911",
                 null, "Hi Im a gamer", "password");
-        final ResponseEntity<UpdateGamerResponse> returnedGamer = gamerController.updateGamer(updateGamerRequest);
+        final ResponseEntity<UpdateGamerResponse> returnedGamer = gamerController.updateGamer(updateGamerRequest, file);
 
         final UpdateGamerResponse body = returnedGamer.getBody();
         assertTrue(body.getSuccess());
@@ -82,13 +91,21 @@ public class GamerControllerTest {
     public void testUpdateGamerNotExists() {
         log.info("testUpdateGamerNotExists");
 
+        MockMultipartFile file
+                = new MockMultipartFile(
+                "file",
+                "hello.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "Hello, World!".getBytes()
+        );
+
         final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
                 "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         Mockito.when(gamerService.updateGamer(Mockito.any(Gamer.class))).thenReturn(gamer);
 
         final UpdateGamerRequest updateGamerRequest = new UpdateGamerRequest("2", "NewGamer", new Date(1656366879731L),
                 "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
-        final ResponseEntity<UpdateGamerResponse> returnedGamer = gamerController.updateGamer(updateGamerRequest);
+        final ResponseEntity<UpdateGamerResponse> returnedGamer = gamerController.updateGamer(updateGamerRequest, file);
 
         final UpdateGamerResponse body = returnedGamer.getBody();
         assertTrue(body.getSuccess());

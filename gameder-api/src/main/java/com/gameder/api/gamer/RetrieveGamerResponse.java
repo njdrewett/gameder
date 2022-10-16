@@ -11,16 +11,14 @@ public class RetrieveGamerResponse {
 
     private String emailAddress;
     private String telephoneNumber;
-    private byte[] profileImage;
     private String introductionText;
 
-    public RetrieveGamerResponse(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, byte[] profileImage, String introductionText) {
+    public RetrieveGamerResponse(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber, String introductionText) {
         this.id = id;
         this.displayName = displayName;
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
         this.telephoneNumber = telephoneNumber;
-        this.profileImage = profileImage;
         this.introductionText = introductionText;
     }
 
@@ -68,14 +66,6 @@ public class RetrieveGamerResponse {
 
     public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
-    }
-
-    public byte[] getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(byte[] profileImage) {
-        this.profileImage = profileImage;
     }
 
     public String getIntroductionText() {

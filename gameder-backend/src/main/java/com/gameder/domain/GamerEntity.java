@@ -21,6 +21,7 @@ public class GamerEntity {
     private String emailAddress;
     private String telephoneNumber;
     private byte[] profileImage;
+    private String profileContentType;
     private String introductionText;
     private boolean archived;
 
@@ -29,6 +30,14 @@ public class GamerEntity {
 
 
     public GamerEntity() {
+    }
+
+    public String getProfileContentType() {
+        return profileContentType;
+    }
+
+    public void setProfileContentType(String profileContentType) {
+        this.profileContentType = profileContentType;
     }
 
     public String getEmailAddress() {
