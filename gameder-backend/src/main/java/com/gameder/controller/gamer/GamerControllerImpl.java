@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -111,10 +110,18 @@ public class GamerControllerImpl implements GamerController {
 
         final Gamer gamer = gamerService.retrieveGamer(gamerId);
 
-        log.info("retrieveProfileImage {}" );
+        log.info("retrieveProfileImage Return" );
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf(gamer.getProfileImageContentType())).body(gamer.getProfileImageData());
     }
 
+    @PostMapping(path="/find")
+    public ResponseEntity<List<RetrieveGamerResponse>> findGamer(@RequestBody final FindGamerRequest findGamerRequest) {
+        log.info("findGamer {}" , findGamerRequest);
+
+//        log.info("Response: {}" , response);
+
+        return null; //new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 
 }

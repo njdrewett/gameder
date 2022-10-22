@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import defaultProfileData from '../images/placeholder.png'
 import { useCookies } from 'react-cookie'
 
-const ChatHeader = ({gamer}) => {
+const ChatHeader = ( {gamer } ) => {
     const [error, setError] = useState(null);
     const [cookies, setCookie, removeCookie] = useCookies(null)
     const [profileData, setProfileData] = useState({
@@ -10,13 +10,13 @@ const ChatHeader = ({gamer}) => {
     })
  
     useEffect(() => {
-        const retrieveGamerProfile = () => {
+        const retrieveGamerProfile = async () => {
             console.log("Gamer profile: " , gamer)
             if(gamer !== null) {
     
                 console.log("Getting profile link URL")
             const profileLink = "http://localhost:8080/api/gamer/profileImage/"+ gamer?.id
-            fetch(profileLink, {              
+            await fetch(profileLink, {              
                 method: "GET",
                 headers: {
                     "Authorization": "Bearer " + cookies.jwToken
@@ -30,11 +30,10 @@ const ChatHeader = ({gamer}) => {
             }).catch(setError)
         }
         }
-    
         retrieveGamerProfile()
     }, [gamer])
 
-
+    
     const logout = () => {
         removeCookie("userId")
         removeCookie("emailAddress")

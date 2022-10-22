@@ -18,21 +18,21 @@ import amongus from '../images/game-covers/amongus.jpg'
 const Dashboard = () => {
 
     const [gamer, setGamer] = useState(null)
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null)
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
-
+    const [matchedGame, setMatchedGame] = useState(null)
 
 
     useEffect(() => {
 
-        const retrieveGamer = () => {
+        const retrieveGamer = async () => {
 
             const userId = cookies.userId
     
             console.log("retrieveGamer " + userId)
     
             const getGamerByIdLink = "http://localhost:8080/api/gamer/" + userId
-            axios.get(getGamerByIdLink, {              
+            await axios.get(getGamerByIdLink, {              
                 headers: {
                     "Authorization": "Bearer " + cookies.jwToken
                 }
@@ -45,30 +45,39 @@ const Dashboard = () => {
         retrieveGamer()
     }, [])
 
-    console.log('Gamer : ', gamer )
+
+    useEffect(() => {
+        console.log("inner matched game " + matchedGame)
+    }, [matchedGame])
 
     const db = [
         {
+            id:1,
             name: 'APEX Legends',
             url: `${apexLegends}`
         },
         {
+            id:2,
             name: 'Fall Guys',
             url: `${fallguys}`
         },
         {
+            id:3,
             name: 'Player Unknown Battlegrounds',
             url: `${playerunknownbattlegrounds}`
         },
         {
+            id:4,
             name: 'Call Of Duty',
             url: `${callofduty}`
         },
         {
+            id: 5,
             name: 'Eldon Ring',
             url: `${eldonring}`
         },
         {
+            id: 6,
             name: 'Among Us',
             url: `${amongus}`
         }
@@ -76,12 +85,21 @@ const Dashboard = () => {
 
 
 
-    const characters = db
+    const games = db
 
     const [lastDirection, setLastDirection] = useState()
 
-    const swiped = (direction, nameToDelete) => {
-        console.log('removing: ' + nameToDelete)
+
+    const updateGameMatches = (swipedGame) => {
+        console.log("updating game match" )
+        setMatchedGame(swipedGame)
+        console.log('Matched game ' + swipedGame?.name)
+    }
+
+    const swiped = (direction, swipedGame) => {
+        if(direction === 'right') {
+            updateGameMatches(swipedGame)
+        }
         setLastDirection(direction)
     }
 
@@ -100,17 +118,17 @@ const Dashboard = () => {
             />
             <div className="dashboard-panel">
 
-                <ChatContainer gamer={gamer} />
+                <ChatContainer gamer={gamer} matchedGame={matchedGame}/>
                 <div className="swipe-container">
                     <div className="card-container">
-                        {characters.map((character) =>
+                        {games.map((game) =>
                             <TinderCard
                                 className='swipe'
-                                key={character.name}
-                                onSwipe={(dir) => swiped(dir, character.name)}
-                                onCardLeftScreen={() => outOfFrame(character.name)}>
-                                <div style={{ backgroundImage: 'url(' + character.url + ')' }} className='card'>
-                                    <h3>{character.name}</h3>
+                                key={game.name}
+                                onSwipe={(dir) => swiped(dir, game)}
+                                onCardLeftScreen={() => outOfFrame(game.name)}>
+                                <div style={{ backgroundImage: 'url(' + game.url + ')' }} className='card'>
+                                    <h3>{game.name}</h3>
                                 </div>
                             </TinderCard>
                         )}

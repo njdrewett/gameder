@@ -15,15 +15,15 @@ public interface GamerService {
     Gamer createGamer(final Gamer gamer);
 
     /**
-     * Retreive an existing Gamer
-     * @param identifier
-     * @return
+     * Retrieve an existing Gamer
+     * @param identifier gamerId
+     * @return found gamer or null if not exists.
      */
     Gamer retrieveGamer(final String identifier);
 
     /**
      * Retrieve all existing, non-archived Gamers
-     * @return
+     * @return All existing gamers.
      */
     List<Gamer> retrieveAllGamers();
 
@@ -36,15 +36,21 @@ public interface GamerService {
 
     /**
      * Archive the identified gamer
-     * @param identifier
+     * @param identifier gamer id to archive.
      */
     void archiveGamer(final String identifier);
 
     /**
      * Return true if the given email address already exists against a gamer
-     * @param emailAddress
+     * @param emailAddress email address to check if exists.
      * @return true if email exists.
      */
     Boolean emailExists(final String emailAddress);
+
+    /**
+     * Find a return Gamers that result from the given query object.
+     * @Param GamerQuery Object.
+     *
+     */
 
 }

@@ -23,4 +23,6 @@ public interface GamerController {
 
     ResponseEntity<?> retrieveProfileImage(final String gamerId);
 
+    ResponseEntity<List<RetrieveGamerResponse>> findGamer(final FindGamerRequest findGamerRequest);
+
 }

@@ -2,17 +2,17 @@ import ChatHeader from "./ChatHeader";
 import ChatDisplay from "./ChatDisplay";
 import MatchesDisplay from "./MatchesDisplay";
 
-const ChatContainer = ( { gamer } ) => {
+const ChatContainer = ( { gamer , matchedGame }) => {
     return (
             <div className="chat-container">
-                <ChatHeader gamer={gamer}/>
+                <ChatHeader gamer={gamer} />
 
                 <div>
                     <button className="option">Matches</button>
                     <button className="option">Chat</button>
 
                 </div>
-                <MatchesDisplay />
+                <MatchesDisplay matchedGame={matchedGame}/>
 
                 <ChatDisplay />
             </div>
