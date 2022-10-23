@@ -2,7 +2,7 @@ package com.gameder.api;
 
 import java.util.Date;
 
-public class GamerQuery {
+public class GamerCriteria {
 
     private String id;
     private String displayName;
@@ -11,12 +11,12 @@ public class GamerQuery {
     private String telephoneNumber;
     private String excludeId;
 
-    public GamerQuery() {
+    public GamerCriteria() {
         super();
     }
 
-    public GamerQuery(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber,
-                    String excludeId) {
+    public GamerCriteria(String id, String displayName, Date dateOfBirth, String emailAddress, String telephoneNumber,
+                         String excludeId) {
         this.id = id;
         this.displayName = displayName;
         this.dateOfBirth = dateOfBirth;

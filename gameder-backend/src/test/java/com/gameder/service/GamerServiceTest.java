@@ -3,6 +3,7 @@ package com.gameder.service;
 import com.gameder.api.Gamer;
 import com.gameder.domain.GamerEntity;
 import com.gameder.repository.GamerRepository;
+import com.gameder.repository.GamerRepositoryCustom;
 import com.gameder.service.gamer.GamerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,10 +13,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,10 +35,13 @@ public class GamerServiceTest {
    @Mock
    private GamerRepository gamerRepository;
 
+   @Mock
+   private GamerRepositoryCustom gamerRepositoryCustom;
+
    @BeforeEach
    void setup() {
       log.info("setup");
-      gamerService = new GamerServiceImpl(gamerRepository);
+      gamerService = new GamerServiceImpl(gamerRepository, gamerRepositoryCustom);
    }
 
    @Test
@@ -148,7 +154,7 @@ public class GamerServiceTest {
       final List<Gamer> returnedGamers = gamerService.retrieveAllGamers();
 
       assertNotNull(returnedGamers);
-      assertTrue(returnedGamers.size() == 1);
+      assertEquals(1, returnedGamers.size());
       Gamer returnedGamer = returnedGamers.get(0);
       assertNotNull(returnedGamer.getId());
       assertEquals(returnedGamer.getId(), persistedGamerEntity.getId());
@@ -244,24 +250,5 @@ public class GamerServiceTest {
 
       log.info("testEmailExists");
    }
-
-//   @Test
-//   public void testLogin() {
-//      log.info("testLogin");
-//
-//      final Gamer gamer = new Gamer(null,"NewGamer", new Date(1656366879731L),
-//              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
-//
-//      final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
-//      final List<GamerEntity> gamers = Collections.singletonList(persistedGamerEntity);
-//
-//      Mockito.when(gamerRepository.findByEmailAddressAndPassword("gamer@gamers.com","password")).thenReturn(gamers);
-//
-//      Boolean result = gamerService.login("gamer@gamers.com","password");
-//
-//      assertTrue(result);
-//
-//      log.info("testLogin");
-//   }
 
 }

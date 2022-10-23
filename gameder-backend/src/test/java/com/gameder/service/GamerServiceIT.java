@@ -2,6 +2,7 @@ package com.gameder.service;
 
 
 import com.gameder.api.Gamer;
+import com.gameder.api.GamerCriteria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -119,7 +120,7 @@ public class GamerServiceIT {
         log.info("Gamers all: " + returnedGamer);
 
         assertNotNull(returnedGamer);
-        assertTrue(returnedGamer.size() == 1);
+        assertEquals(1, returnedGamer.size());
 
         log.info("testRetrieveGamer {}", returnedGamer);
     }
@@ -181,17 +182,45 @@ public class GamerServiceIT {
         log.info("testEmailExists {}", emailExists);
     }
 
-//    @Test
-//    public void testLogin() {
-//        log.info("testLogin");
-//
-//        final Gamer createdGamer = createGamer();
-//
-//        final Boolean login = gamerService.login("gamer@gamers.com", "password");
-//
-//        assertTrue(login);
-//
-//        log.info("testLogin {}", login);
-//    }
+    @Test
+    public void testCriteriaFindById() {
+        log.info("testCriteriaFindById");
+
+        final Gamer createdGamer = createGamer();
+
+        GamerCriteria gamerCriteria = new GamerCriteria();
+        gamerCriteria.setId(createdGamer.getId());
+
+        final List<Gamer> results = gamerService.findGamers(gamerCriteria);
+
+        assertNotNull(results);
+        assertEquals(1, results.size());
+        assertEquals(results.get(0).getId(), createdGamer.getId());
+
+        log.info("Exitting testFindById ");
+    }
+
+
+    @Test
+    public void testCriteriaFindByExcludeId() {
+        log.info("testCriteriaFindByExcludeId");
+
+        final Gamer createdGamer = createGamer();
+
+        final Gamer excludeCreatedGamer = createGamer();
+
+        GamerCriteria gamerCriteria = new GamerCriteria();
+        gamerCriteria.setExcludeId(excludeCreatedGamer.getId());
+
+        final List<Gamer> results = gamerService.findGamers(gamerCriteria);
+
+        assertNotNull(results);
+        assertEquals(1, results.size());
+        assertEquals(results.get(0).getId(), createdGamer.getId());
+        assertNotEquals(results.get(0).getId(), excludeCreatedGamer.getId());
+
+        log.info("Exiting testFindById ");
+    }
+
 
 }

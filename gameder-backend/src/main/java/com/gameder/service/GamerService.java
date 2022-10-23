@@ -2,6 +2,7 @@ package com.gameder.service;
 
 
 import com.gameder.api.Gamer;
+import com.gameder.api.GamerCriteria;
 
 import java.util.List;
 
@@ -49,8 +50,8 @@ public interface GamerService {
 
     /**
      * Find a return Gamers that result from the given query object.
-     * @Param GamerQuery Object.
+     * @param gamerCriteria Object.
      *
      */
-
+    List<Gamer> findGamers(GamerCriteria gamerCriteria);
 }

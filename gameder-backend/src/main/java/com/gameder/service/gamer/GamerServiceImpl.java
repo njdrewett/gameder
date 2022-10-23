@@ -1,9 +1,11 @@
 package com.gameder.service.gamer;
 
 import com.gameder.api.Gamer;
+import com.gameder.api.GamerCriteria;
 import com.gameder.converter.GamerGamerEntityConverter;
 import com.gameder.domain.GamerEntity;
 import com.gameder.repository.GamerRepository;
+import com.gameder.repository.GamerRepositoryCustom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,9 @@ public class GamerServiceImpl extends GamerServiceBase {
     private static final Logger log = LoggerFactory.getLogger(GamerServiceImpl.class);
 
     @Autowired
-    public GamerServiceImpl(final GamerRepository gamerRepository) {
-        super(gamerRepository);
+    public GamerServiceImpl(final GamerRepository gamerRepository,
+                            final GamerRepositoryCustom gamerRepositoryCustom) {
+        super(gamerRepository, gamerRepositoryCustom);
     }
 
     @Override
@@ -114,4 +117,19 @@ public class GamerServiceImpl extends GamerServiceBase {
 
         return emailExists;
     }
+
+    @Override
+    @Transactional(Transactional.TxType.NOT_SUPPORTED)
+    public List<Gamer> findGamers(final GamerCriteria gamerCriteria) {
+        log.info("Entering findGamers: {}", gamerCriteria);
+
+        final List<GamerEntity> gamerEntities = getGamerRepositoryCustom().findByCriteria(gamerCriteria);
+
+        final List<Gamer> gamerResponse = GamerGamerEntityConverter.toGamer(gamerEntities);
+
+        log.info("Exiting findGamers: {}" , gamerResponse);
+
+        return gamerResponse;
+    }
+
 }
