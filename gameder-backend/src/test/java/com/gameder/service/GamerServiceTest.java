@@ -1,6 +1,7 @@
 package com.gameder.service;
 
 import com.gameder.api.Gamer;
+import com.gameder.api.GamerCriteria;
 import com.gameder.domain.GamerEntity;
 import com.gameder.repository.GamerRepository;
 import com.gameder.repository.GamerRepositoryCustom;
@@ -73,7 +74,8 @@ public class GamerServiceTest {
    public void testUpdateGamer() {
       log.info("testUpdateGamer");
 
-      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),"gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
+      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),"gamer@gamers.com",
+              "019191999991911", null, "jpg" , "Hi Im a gamer", "password");
 
       final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
 
@@ -98,8 +100,8 @@ public class GamerServiceTest {
    public void testUpdateGamerNotExists() {
       log.info("testUpdateGamer");
 
-      final Gamer gamer = new Gamer("1","NewGamer", new Date(1656366879731L),
-              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
+      final Gamer gamer = new Gamer("1", "NewGamer", new Date(1656366879731L),
+              "gamer@gamers.com", "019191999991911", null, "jpg", "Hi Im a gamer", "password");
 
       Mockito.when(gamerRepository.findById(gamer.getId())).thenReturn(Optional.empty());
 
@@ -249,6 +251,61 @@ public class GamerServiceTest {
       assertTrue(result);
 
       log.info("testEmailExists");
+   }
+
+
+   @Test
+   public void testCriteriaFindById() {
+      log.info("testCriteriaFindById");
+
+      final Gamer gamer = new Gamer(null, "NewGamer", new Date(1656366879731L),
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
+      final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
+
+      GamerCriteria gamerCriteria = new GamerCriteria();
+      gamerCriteria.setId(persistedGamerEntity.getId());
+
+      final List<GamerEntity> gamers = Collections.singletonList(persistedGamerEntity);
+
+      Mockito.when(gamerRepositoryCustom.findByCriteria(gamerCriteria)).thenReturn(gamers);
+      final List<Gamer> results = gamerService.findGamers(gamerCriteria);
+
+      assertNotNull(results);
+      assertEquals(1, results.size());
+      assertEquals(results.get(0).getId(), persistedGamerEntity.getId());
+
+      log.info("Exiting testCriteriaFindById ");
+   }
+
+
+   @Test
+   public void testCriteriaFindByExcludeId() {
+      log.info("testCriteriaFindByExcludeId");
+
+      final Gamer gamer = new Gamer(null, "NewGamer", new Date(1656366879731L),
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
+      final GamerEntity persistedGamerEntity = persistedGamerEntity(gamer);
+
+      final Gamer gamerExcluded = new Gamer(null, "NewGamer", new Date(1656366879731L),
+              "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
+      final GamerEntity excludedGamerEntity = persistedGamerEntity(gamer);
+      excludedGamerEntity.setId("2");
+
+      GamerCriteria gamerCriteria = new GamerCriteria();
+      gamerCriteria.setExcludeId(excludedGamerEntity.getId());
+
+      final List<GamerEntity> gamers = Collections.singletonList(persistedGamerEntity);
+
+      Mockito.when(gamerRepositoryCustom.findByCriteria(gamerCriteria)).thenReturn(gamers);
+
+      final List<Gamer> results = gamerService.findGamers(gamerCriteria);
+
+      assertNotNull(results);
+      assertEquals(1, results.size());
+      assertEquals(results.get(0).getId(), persistedGamerEntity.getId());
+      assertNotEquals(results.get(0).getId(), excludedGamerEntity.getId());
+
+      log.info("Exiting testCriteriaFindByExcludeId ");
    }
 
 }

@@ -1,7 +1,9 @@
 package com.gameder.controller.gamer;
 
 import com.gameder.api.Gamer;
+import com.gameder.api.GamerCriteria;
 import com.gameder.api.gamer.CreateGamerRequest;
+import com.gameder.api.gamer.FindGamerRequest;
 import com.gameder.api.gamer.RetrieveGamerResponse;
 import com.gameder.api.gamer.UpdateGamerRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +34,11 @@ public class GamerConverter {
 
     public static List<RetrieveGamerResponse> toRetrieveGamerResponse(final List<Gamer> gamers) {
        return gamers.stream().map(GamerConverter::toRetrieveGamerResponse).collect(Collectors.toList());
+    }
+
+    public static GamerCriteria toGamerCriteria(final FindGamerRequest findGamerRequest) {
+        return new GamerCriteria(findGamerRequest.getId(),findGamerRequest.getDisplayName(),findGamerRequest.getDateOfBirth(),
+                findGamerRequest.getEmailAddress(), findGamerRequest.getTelephoneNumber(),findGamerRequest.getExcludeId());
     }
 
 }

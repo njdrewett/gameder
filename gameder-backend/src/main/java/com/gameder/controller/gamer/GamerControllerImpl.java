@@ -1,6 +1,7 @@
 package com.gameder.controller.gamer;
 
 import com.gameder.api.Gamer;
+import com.gameder.api.GamerCriteria;
 import com.gameder.api.gamer.*;
 import com.gameder.service.GamerService;
 import org.slf4j.Logger;
@@ -118,9 +119,13 @@ public class GamerControllerImpl implements GamerController {
     public ResponseEntity<List<RetrieveGamerResponse>> findGamer(@RequestBody final FindGamerRequest findGamerRequest) {
         log.info("findGamer {}" , findGamerRequest);
 
-//        log.info("Response: {}" , response);
+        final GamerCriteria gamerCriteria = GamerConverter.toGamerCriteria(findGamerRequest);
+        final List<Gamer> gamers = gamerService.findGamers(gamerCriteria);
+        final List<RetrieveGamerResponse> retrieveAllGamersResponse = GamerConverter.toRetrieveGamerResponse(gamers);
 
-        return null; //new ResponseEntity<>(response, HttpStatus.OK);
+        log.info("retrieveAllGamers {}" , retrieveAllGamersResponse);
+
+        return new ResponseEntity<>(retrieveAllGamersResponse, HttpStatus.OK);
     }
 
 

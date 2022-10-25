@@ -1,6 +1,7 @@
 package com.gameder.api;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class GamerCriteria {
 
@@ -82,5 +83,18 @@ public class GamerCriteria {
                 ", emailAddress='" + emailAddress + '\'' +
                 ", telephoneNumber='" + telephoneNumber + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GamerCriteria that = (GamerCriteria) o;
+        return Objects.equals(id, that.id) && Objects.equals(displayName, that.displayName) && Objects.equals(dateOfBirth, that.dateOfBirth) && Objects.equals(emailAddress, that.emailAddress) && Objects.equals(telephoneNumber, that.telephoneNumber) && Objects.equals(excludeId, that.excludeId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, displayName, dateOfBirth, emailAddress, telephoneNumber, excludeId);
     }
 }

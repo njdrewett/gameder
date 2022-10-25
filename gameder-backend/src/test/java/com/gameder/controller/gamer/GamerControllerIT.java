@@ -1,5 +1,7 @@
 package com.gameder.controller.gamer;
 
+import com.gameder.api.Gamer;
+import com.gameder.api.GamerCriteria;
 import com.gameder.api.gamer.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
@@ -201,17 +204,43 @@ public class GamerControllerIT {
         log.info("testEmailExists");
     }
 
-//    @Test
-//    public void testLogin() {
-//        log.info("testLogin");
-//
-//        final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
-//
-//        final ResponseEntity<Boolean> result = gamerController.login("gamer@gamers.com", "password");
-//
-//        final Boolean body = result.getBody();
-//        assertTrue(body);
-//
-//        log.info("testLogin");
-//    }
+    @Test
+    public void testCriteriaFindById() {
+        log.info("testCriteriaFindById");
+
+        final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
+
+        FindGamerRequest gamerCriteria = new FindGamerRequest();
+        gamerCriteria.setId(returnedGamer.getBody().getId());
+
+        final ResponseEntity<List<RetrieveGamerResponse>> results = gamerController.findGamer(gamerCriteria);
+
+        assertNotNull(results);
+        assertEquals(HttpStatus.OK, results.getStatusCode());
+        assertEquals(results.getBody().get(0).getId(), returnedGamer.getBody().getId());
+
+        log.info("Exitting testFindById ");
+    }
+
+    @Test
+    public void testCriteriaFindByExcludeId() {
+        log.info("testCriteriaFindByExcludeId");
+
+        final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
+
+        final ResponseEntity<CreateGamerResponse> excludeGamer = createGamer();
+
+        FindGamerRequest gamerCriteria = new FindGamerRequest();
+        gamerCriteria.setExcludeId(excludeGamer.getBody().getId());
+
+        final ResponseEntity<List<RetrieveGamerResponse>> results = gamerController.findGamer(gamerCriteria);
+
+        assertNotNull(results);
+        assertEquals(HttpStatus.OK, results.getStatusCode());
+        assertEquals(results.getBody().get(0).getId(), returnedGamer.getBody().getId());
+        assertNotEquals(results.getBody().get(0).getId(), excludeGamer.getBody().getId());
+
+        log.info("Exiting testCriteriaFindByExcludeId ");
+    }
+
 }
