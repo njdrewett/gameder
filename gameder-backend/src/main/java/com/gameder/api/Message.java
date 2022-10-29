@@ -8,9 +8,8 @@ public class Message {
     private String messageText;
     private Date creationDate;
     private Date lastUpdatedDate;
-    private String fromUserId;
-    private String toUserId;
-
+    private String fromGamerId;
+    private String toGamerId;
 
     @Override
     public String toString() {
@@ -19,34 +18,34 @@ public class Message {
                 ", messageText='" + messageText + '\'' +
                 ", creationDate=" + creationDate +
                 ", lastUpdatedDate=" + lastUpdatedDate +
-                ", fromUserId='" + fromUserId + '\'' +
-                ", toUserId='" + toUserId + '\'' +
+                ", fromGamerId='" + fromGamerId + '\'' +
+                ", toGamerId='" + toGamerId + '\'' +
                 '}';
     }
 
-    public Message(String id, String messageText, Date creationDate, Date lastUpdatedDate, String fromUserId, String toUserId) {
+    public Message(String id, String messageText, Date creationDate, Date lastUpdatedDate, String fromGamerId, String toGamerId) {
         this.id = id;
         this.messageText = messageText;
         this.creationDate = creationDate;
         this.lastUpdatedDate = lastUpdatedDate;
-        this.fromUserId = fromUserId;
-        this.toUserId = toUserId;
+        this.fromGamerId = fromGamerId;
+        this.toGamerId = toGamerId;
     }
 
-    public String getFromUserId() {
-        return fromUserId;
+    public String getFromGamerId() {
+        return fromGamerId;
     }
 
-    public void setFromUserId(String fromUserId) {
-        this.fromUserId = fromUserId;
+    public void setFromGamerId(String fromGamerId) {
+        this.fromGamerId = fromGamerId;
     }
 
-    public String getToUserId() {
-        return toUserId;
+    public String getToGamerId() {
+        return toGamerId;
     }
 
-    public void setToUserId(String toUserId) {
-        this.toUserId = toUserId;
+    public void setToGamerId(String toGamerId) {
+        this.toGamerId = toGamerId;
     }
 
 

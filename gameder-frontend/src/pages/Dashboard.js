@@ -19,8 +19,8 @@ const Dashboard = () => {
 
     const [gamer, setGamer] = useState(null)
     const [error, setError] = useState(null)
-    const [cookies, setCookie, removeCookie] = useCookies(['user'])
-    const [matchedGame, setMatchedGame] = useState(null)
+    const [cookies, setCookie, removeCookie] = useCookies(null)
+    const [matchedGames, setMatchedGames] = useState([])
 
 
     useEffect(() => {
@@ -47,8 +47,8 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        console.log("inner matched game " + matchedGame)
-    }, [matchedGame])
+        console.log("inner matched game " + matchedGames)
+    }, [matchedGames])
 
     const db = [
         {
@@ -92,7 +92,7 @@ const Dashboard = () => {
 
     const updateGameMatches = (swipedGame) => {
         console.log("updating game match" )
-        setMatchedGame(swipedGame)
+        setMatchedGames(matchedGames => [...matchedGames,swipedGame])
         console.log('Matched game ' + swipedGame?.name)
     }
 
@@ -118,7 +118,7 @@ const Dashboard = () => {
             />
             <div className="dashboard-panel">
 
-                <ChatContainer gamer={gamer} matchedGame={matchedGame}/>
+                <ChatContainer gamer={gamer} matchedGames={matchedGames}/>
                 <div className="swipe-container">
                     <div className="card-container">
                         {games.map((game) =>

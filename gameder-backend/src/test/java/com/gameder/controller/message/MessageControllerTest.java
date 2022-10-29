@@ -1,6 +1,7 @@
 package com.gameder.controller.message;
 
 import com.gameder.api.Message;
+import com.gameder.api.gamer.CreateGamerResponse;
 import com.gameder.api.message.*;
 import com.gameder.service.MessageService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,16 +43,16 @@ public class MessageControllerTest {
     public void testCreateMessage() {
         log.info("testCreateMessage");
 
-        final Message Message = new Message("1","NewMessage", new Date(1656366879731L),
+        final Message message = new Message("1","NewMessage", new Date(1656366879731L),
                 new Date(1656366879731L),"123", "321");
-        Mockito.when(messageService.createMessage(Mockito.any(Message.class))).thenReturn(Message);
+        Mockito.when(messageService.createMessage(Mockito.any(Message.class))).thenReturn(message);
 
         final CreateMessageRequest createMessageRequest = new CreateMessageRequest("NewMessage", "123", "321");
         final ResponseEntity<CreateMessageResponse> returnedMessage = messageController.createMessage(createMessageRequest);
 
         final CreateMessageResponse body = returnedMessage.getBody();
         assertTrue(body.getSuccess());
-        assertEquals(body.getId(), Message.getId());
+        assertEquals(body.getId(), message.getId());
 
         log.info("testCreateMessageResponse {}", returnedMessage );
     }
@@ -76,9 +79,9 @@ public class MessageControllerTest {
     public void testUpdateMessageNotExists() {
         log.info("testUpdateMessageNotExists");
 
-        final Message Message = new Message("1","NewMessage", new Date(1656366879731L),new Date(1656366879731L),
+        final Message message = new Message("1","NewMessage", new Date(1656366879731L),new Date(1656366879731L),
                 "123", "321");
-        Mockito.when(messageService.updateMessage(Mockito.any(Message.class))).thenReturn(Message);
+        Mockito.when(messageService.updateMessage(Mockito.any(Message.class))).thenReturn(message);
 
         final UpdateMessageRequest updateMessageRequest = new UpdateMessageRequest("2", "NewMessage",
                 "123", "321");
@@ -86,7 +89,7 @@ public class MessageControllerTest {
 
         final UpdateMessageResponse body = returnedMessage.getBody();
         assertTrue(body.getSuccess());
-        assertEquals(body.getId(), Message.getId());
+        assertEquals(body.getId(), message.getId());
 
         log.info("testUpdateMessageNotExists");
     }
@@ -153,4 +156,23 @@ public class MessageControllerTest {
 
         log.info("testArchiveMessageNotFound");
     }
+
+    @Test
+    public void testFindMessagesForGamer() {
+        log.info("testFindMessagesForGamer");
+
+        final Message message = new Message("1","NewMessage", new Date(1656366879731L),
+                new Date(1656366879731L),"123", "321");
+        final List<Message> messages = Collections.singletonList(message);
+        Mockito.when(messageService.findMessagesForGamer("123")).thenReturn(messages);
+
+        final ResponseEntity<List<RetrieveMessageResponse>> returnedMessages = messageController.findAllMessagesForGamer("123");
+
+        assertNotNull(returnedMessages);
+        assertNotNull(returnedMessages.getBody());
+        assertEquals(1, returnedMessages.getBody().size());
+
+        log.info("testFindMessagesForGamer {}", returnedMessages);
+    }
+
 }

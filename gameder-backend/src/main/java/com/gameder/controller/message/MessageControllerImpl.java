@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "api/message")
 public class MessageControllerImpl implements MessageController {
@@ -54,14 +56,26 @@ public class MessageControllerImpl implements MessageController {
         log.info("updateMessage {}", updateMessageRequest);
 
         final Message message = MessageConverter.toMessage(updateMessageRequest);
-        final Message MessageResponse = messageService.updateMessage(message);
-        final UpdateMessageResponse updateMessageResponse = new UpdateMessageResponse(MessageResponse.getId(), true);
+        final Message messageResponse = messageService.updateMessage(message);
+        final UpdateMessageResponse updateMessageResponse = new UpdateMessageResponse(messageResponse.getId(), true);
 
         log.info("updateMessage {}", updateMessageResponse);
         return new ResponseEntity<>(updateMessageResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping(path="{MessageId}")
+    @Override
+    @GetMapping(path="/findByGamer/{gamerId}")
+    public ResponseEntity<List<RetrieveMessageResponse>> findAllMessagesForGamer(final String gamerId) {
+        log.info("findAllMessagesForGamer {}", gamerId);
+
+        final List<Message> messages = messageService.findMessagesForGamer(gamerId);
+        final List<RetrieveMessageResponse> messageResponses = MessageConverter.toRetrieveMessageResponse(messages);
+
+        log.info("findAllMessagesForGamer {}", messageResponses);
+        return new ResponseEntity<>(messageResponses, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path="{messageId}")
     public void archiveMessage(@PathVariable("messageId") String messageId) {
         log.info("archiveMessage {} ", messageId);
 
@@ -69,6 +83,4 @@ public class MessageControllerImpl implements MessageController {
 
         log.info("archiveMessage  ");
     }
-
-
 }

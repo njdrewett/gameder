@@ -47,7 +47,7 @@ public class GameServiceImpl extends GameServiceBase {
     public Game retrieveGame(String identifier) {
         log.info("Entering retrieveGame: {}",identifier);
 
-        final GameEntity gameEntity = getGameRepository().findById(identifier).orElseThrow(EntityNotFoundException::new);
+        final GameEntity gameEntity = getGameRepository().findById(identifier).orElseThrow(() -> new EntityNotFoundException("Game: " + identifier));
 
         final Game gameResponse = GameGameEntityConverter.toGame(gameEntity);
 
@@ -76,7 +76,7 @@ public class GameServiceImpl extends GameServiceBase {
     public Game updateGame(final Game game) {
         log.info("Entering updateGame: {}",game);
 
-        final GameEntity foundGameEntity = getGameRepository().findById(game.getId()).orElseThrow(EntityNotFoundException::new);
+        final GameEntity foundGameEntity = getGameRepository().findById(game.getId()).orElseThrow(() -> new EntityNotFoundException("Game: " + game.getId()));
 
         final GameEntity updateGame = GameGameEntityConverter.toGameEntity(game, foundGameEntity);
 
@@ -94,7 +94,7 @@ public class GameServiceImpl extends GameServiceBase {
     public void archiveGame(String identifier) {
         log.info("Entering archiveGame: {}",identifier);
 
-        final GameEntity foundGameEntity = getGameRepository().findById(identifier).orElseThrow(EntityNotFoundException::new);
+        final GameEntity foundGameEntity = getGameRepository().findById(identifier).orElseThrow(() -> new EntityNotFoundException("Game: " + identifier));
 
         foundGameEntity.setArchived(true);
 

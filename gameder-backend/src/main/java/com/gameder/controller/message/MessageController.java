@@ -4,6 +4,8 @@ import com.gameder.api.gamer.CreateGamerResponse;
 import com.gameder.api.message.*;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface MessageController {
 
     ResponseEntity<CreateMessageResponse> createMessage(final CreateMessageRequest createMessageRequest);
@@ -12,5 +14,7 @@ public interface MessageController {
 
     ResponseEntity<UpdateMessageResponse> updateMessage(final UpdateMessageRequest updateMessageRequest);
 
-    void archiveMessage(String messageId) ;
+    ResponseEntity<List<RetrieveMessageResponse>> findAllMessagesForGamer(final String gamerId);
+
+    void archiveMessage(final String messageId) ;
 }

@@ -3,6 +3,8 @@ package com.gameder.service;
 
 import com.gameder.api.Message;
 
+import java.util.List;
+
 public interface MessageService {
 
     /**
@@ -13,7 +15,7 @@ public interface MessageService {
     Message createMessage(final Message message);
 
     /**
-     * Retreive an existing Message
+     * Retrieve an existing Message
      * @param identifier message id
      * @return requested message
      */
@@ -31,4 +33,10 @@ public interface MessageService {
      * @param identifier message identifier
      */
     void archiveMessage(final String identifier);
+
+    /**
+     * Find and return
+     */
+    List<Message> findMessagesForGamer(final String gamerId);
+
 }

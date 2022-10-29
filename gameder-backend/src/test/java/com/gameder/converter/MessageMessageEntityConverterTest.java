@@ -1,6 +1,7 @@
 package com.gameder.converter;
 
 import com.gameder.api.Message;
+import com.gameder.domain.GamerEntity;
 import com.gameder.domain.MessageEntity;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ public class MessageMessageEntityConverterTest {
     @Test
     public void toMessageTest() {
         MessageEntity messageEntity = createMessageEntity();
+
         log.info("toMessageTest {}", messageEntity);
 
         final Message message = MessageMessageEntityConverter.toMessage(messageEntity);
@@ -30,8 +32,8 @@ public class MessageMessageEntityConverterTest {
         assertEquals(message.getMessageText(), messageEntity.getMessageText());
         assertEquals(message.getCreationDate(), messageEntity.getCreationDate());
         assertEquals(message.getLastUpdatedDate(), messageEntity.getLastUpdatedDate());
-        assertEquals(message.getFromUserId(), messageEntity.getFromUserId());
-        assertEquals(message.getToUserId(), messageEntity.getToUserId());
+        assertEquals(message.getFromGamerId(), messageEntity.getFromGamer().getId());
+        assertEquals(message.getToGamerId(), messageEntity.getToGamer().getId());
 
         log.info("toMessageTest {}", message);
     }
@@ -41,15 +43,20 @@ public class MessageMessageEntityConverterTest {
         Message message = createMessage();
         log.info("toMessageTest {}", message);
 
-        final MessageEntity messageEntity = MessageMessageEntityConverter.toMessageEntity(message);
+        GamerEntity fromGamerEntity = new GamerEntity();
+        fromGamerEntity.setId("123");
+        GamerEntity toGamerEntity = new GamerEntity();
+        toGamerEntity.setId("321");
+
+        final MessageEntity messageEntity = MessageMessageEntityConverter.toMessageEntity(message, fromGamerEntity, toGamerEntity);
 
         assertNotNull(messageEntity.getId());
         assertEquals(messageEntity.getId(), message.getId());
         assertEquals(messageEntity.getMessageText(), message.getMessageText());
         assertEquals(messageEntity.getCreationDate(), message.getCreationDate());
         assertEquals(messageEntity.getLastUpdatedDate(), message.getLastUpdatedDate());
-        assertEquals(messageEntity.getFromUserId(), message.getFromUserId());
-        assertEquals(messageEntity.getToUserId(), message.getToUserId());
+        assertEquals(messageEntity.getFromGamer().getId(), message.getFromGamerId());
+        assertEquals(messageEntity.getToGamer().getId(), message.getToGamerId());
 
         log.info("toMessageTest {}", messageEntity);
     }
@@ -60,8 +67,12 @@ public class MessageMessageEntityConverterTest {
         messageEntity.setCreationDate(new Date(1234567890L));
         messageEntity.setLastUpdatedDate(new Date(1234567890L));
         messageEntity.setMessageText("Test Message");
-        messageEntity.setFromUserId("123");
-        messageEntity.setToUserId("321");
+        GamerEntity fromGamerEntity = new GamerEntity();
+        fromGamerEntity.setId("123");
+        GamerEntity toGamerEntity = new GamerEntity();
+        toGamerEntity.setId("321");
+        messageEntity.setFromGamer(fromGamerEntity);
+        messageEntity.setToGamer(toGamerEntity);
         return messageEntity;
     }
 
@@ -71,8 +82,8 @@ public class MessageMessageEntityConverterTest {
         message.setCreationDate(new Date(1234567890L));
         message.setLastUpdatedDate(new Date(1234567890L));
         message.setMessageText("Test Message");
-        message.setFromUserId("123");
-        message.setToUserId("321");
+        message.setFromGamerId("123");
+        message.setToGamerId("321");
         return message;
     }
 }

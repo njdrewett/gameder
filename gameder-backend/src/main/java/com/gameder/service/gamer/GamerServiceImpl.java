@@ -47,7 +47,7 @@ public class GamerServiceImpl extends GamerServiceBase {
     public Gamer retrieveGamer(String identifier) {
         log.info("Entering retrieveGamer: {}",identifier);
 
-        final GamerEntity gamerEntity = getGamerRepository().findById(identifier).orElseThrow(() -> new EntityNotFoundException(identifier));
+        final GamerEntity gamerEntity = getGamerRepository().findById(identifier).orElseThrow(() -> new EntityNotFoundException("Gamer: " + identifier));
 
         final Gamer gamerResponse = GamerGamerEntityConverter.toGamer(gamerEntity);
 
@@ -76,7 +76,7 @@ public class GamerServiceImpl extends GamerServiceBase {
     public Gamer updateGamer(final Gamer gamer) {
         log.info("Entering updateGamer: {}",gamer);
 
-        final GamerEntity foundGamerEntity = getGamerRepository().findById(gamer.getId()).orElseThrow(() -> new EntityNotFoundException(gamer.getId()));
+        final GamerEntity foundGamerEntity = getGamerRepository().findById(gamer.getId()).orElseThrow(() -> new EntityNotFoundException("Gamer: " + gamer.getId()));
 
         final GamerEntity updateGamer = GamerGamerEntityConverter.toGamerEntity(gamer, foundGamerEntity);
 
@@ -95,7 +95,7 @@ public class GamerServiceImpl extends GamerServiceBase {
         log.info("Entering archiveGamer: {}",identifier);
 
         // Should change all finders and dao methods to only return non-archived entities.
-        final GamerEntity foundGamerEntity = getGamerRepository().findById(identifier).orElseThrow(EntityNotFoundException::new);
+        final GamerEntity foundGamerEntity = getGamerRepository().findById(identifier).orElseThrow(() -> new EntityNotFoundException("Gamer: " + identifier));
 
         foundGamerEntity.setArchived(true);
 

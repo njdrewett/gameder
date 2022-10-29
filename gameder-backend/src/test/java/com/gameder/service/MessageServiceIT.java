@@ -3,22 +3,23 @@ package com.gameder.service;
 
 import com.gameder.api.Gamer;
 import com.gameder.api.Message;
-import com.gameder.api.message.RetrieveMessageResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
 public class MessageServiceIT {
 
@@ -42,13 +43,9 @@ public class MessageServiceIT {
 
     private Message createMessage() {
 
-        final Gamer gamerFrom = new Gamer(null,"NewGamerFrom", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer","password");
-        final Gamer returnedGamerFrom = gamerService.createGamer(gamerFrom);
+        final Gamer gamerFrom = crateGamer("NewGamerFrom");
 
-        final Gamer gamerTo = new Gamer(null,"NewGamerTo", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer","password");
-        final Gamer returnedGamerTo = gamerService.createGamer(gamerTo);
+        final Gamer gamerTo = crateGamer("NewGamerTo");
 
         final Message message = new Message(null,"NewMessageUpdated", null, null,gamerFrom.getId(), gamerTo.getId());
 
@@ -58,10 +55,16 @@ public class MessageServiceIT {
         assertNotNull(returnedMessage.getCreationDate());
         assertNotNull(returnedMessage.getLastUpdatedDate());
         assertEquals(returnedMessage.getMessageText(), message.getMessageText());
-        assertEquals(returnedMessage.getFromUserId(), message.getFromUserId());
-        assertEquals(returnedMessage.getToUserId(), message.getToUserId());
+        assertEquals(returnedMessage.getFromGamerId(), message.getFromGamerId());
+        assertEquals(returnedMessage.getToGamerId(), message.getToGamerId());
 
         return returnedMessage;
+    }
+
+    private Gamer crateGamer(final String displayName) {
+        final Gamer gamerFrom = new Gamer(null,displayName, new Date(1656366879731L),
+                "gamer@gamers.com", "019191999991911", null, "jpg","Hi Im a gamer","password");
+        return  gamerService.createGamer(gamerFrom);
     }
 
     @Test
@@ -75,7 +78,7 @@ public class MessageServiceIT {
                 messageService.retrieveMessage(createdMessage.getId());
 
         final Message message = new Message(retrieveMessageResponseResponseEntity.getId(),"NewMessageUpdated", new Date(1656366879731L), new Date(1656366879731L),
-                retrieveMessageResponseResponseEntity.getFromUserId(), retrieveMessageResponseResponseEntity.getToUserId());
+                retrieveMessageResponseResponseEntity.getFromGamerId(), retrieveMessageResponseResponseEntity.getToGamerId());
 
         final Message returnedMessage = messageService.updateMessage(message);
 
@@ -166,4 +169,44 @@ public class MessageServiceIT {
 
         log.info("testArchiveMessageNotFound");
     }
+
+    @Test
+    public void testFindMessagesForGamer() {
+        log.info("testFindMessagesForGamer");
+        final Gamer gamerFrom = crateGamer("NewGamerFrom");
+
+        final Gamer gamerTo = crateGamer("NewGamerTo");
+
+        final Message message = new Message(null,"NewMessageUpdated", null, null,gamerFrom.getId(), gamerTo.getId());
+
+       messageService.createMessage(message);
+
+        List<Message> returnedMessages = messageService.findMessagesForGamer(gamerFrom.getId());
+
+        assertNotNull(returnedMessages);
+        assertEquals(1, returnedMessages.size());
+        Message returnedMessage = returnedMessages.get(0);
+        assertNotNull(returnedMessage.getId());
+        assertNotNull(returnedMessage.getCreationDate());
+        assertNotNull(returnedMessage.getLastUpdatedDate());
+        assertEquals(returnedMessage.getMessageText(), message.getMessageText());
+        assertEquals(returnedMessage.getFromGamerId(), message.getFromGamerId());
+        assertEquals(returnedMessage.getToGamerId(), message.getToGamerId());
+
+        returnedMessages = messageService.findMessagesForGamer(gamerTo.getId());
+
+        assertNotNull(returnedMessages);
+        assertEquals(1, returnedMessages.size());
+        returnedMessage = returnedMessages.get(0);
+        assertNotNull(returnedMessage.getId());
+        assertNotNull(returnedMessage.getCreationDate());
+        assertNotNull(returnedMessage.getLastUpdatedDate());
+        assertEquals(returnedMessage.getMessageText(), message.getMessageText());
+        assertEquals(returnedMessage.getFromGamerId(), message.getFromGamerId());
+        assertEquals(returnedMessage.getToGamerId(), message.getToGamerId());
+
+        log.info("Exiting testFindMessagesForGamer");
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.gameder.domain;
 
+import com.gameder.api.Gamer;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -17,29 +18,34 @@ public class MessageEntity {
     private String messageText;
     private Date creationDate;
     private Date lastUpdatedDate;
-    private String fromUserId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private GamerEntity fromGamer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private GamerEntity toGamer;
+
+    private boolean archived;
 
     public MessageEntity() {
     }
 
-    public String getFromUserId() {
-        return fromUserId;
+    public GamerEntity getFromGamer() {
+        return fromGamer;
     }
 
-    public void setFromUserId(String fromUserId) {
-        this.fromUserId = fromUserId;
+    public void setFromGamer(GamerEntity fromGamer) {
+        this.fromGamer = fromGamer;
     }
 
-    public String getToUserId() {
-        return toUserId;
+    public GamerEntity getToGamer() {
+        return toGamer;
     }
 
-    public void setToUserId(String toUserId) {
-        this.toUserId = toUserId;
+    public void setToGamer(final GamerEntity toGamer) {
+        this.toGamer = toGamer;
     }
 
-    private String toUserId;
-    private boolean archived;
 
     public String getMessageText() {
         return messageText;

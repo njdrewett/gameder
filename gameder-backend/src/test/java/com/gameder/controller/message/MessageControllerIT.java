@@ -1,5 +1,6 @@
 package com.gameder.controller.message;
 
+import com.gameder.api.Message;
 import com.gameder.api.gamer.CreateGamerRequest;
 import com.gameder.api.gamer.CreateGamerResponse;
 import com.gameder.api.message.*;
@@ -11,10 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Perform Message unit Test
  */
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
 public class MessageControllerIT {
 
@@ -47,23 +51,30 @@ public class MessageControllerIT {
 
     private ResponseEntity<CreateMessageResponse> createMessage() {
 
-        // we need to create to users to link the messages to
-        final CreateGamerRequest createGamerRequestFrom = new CreateGamerRequest("NewGamerA", new Date(1656366879731L)
-                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamerA", "password");
-        final ResponseEntity<CreateGamerResponse> returnedGamerFrom = gamerController.createGamer(createGamerRequestFrom);
-        final CreateGamerRequest createGamerRequestTo = new CreateGamerRequest("NewGamerB", new Date(1656366879731L)
-                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamerA", "password");
-        final ResponseEntity<CreateGamerResponse> returnedGamerTo = gamerController.createGamer(createGamerRequestTo);
+        final ResponseEntity<CreateGamerResponse> returnedGamerFrom = createGamer("NewGamerA", gamerController);
+        final ResponseEntity<CreateGamerResponse> returnedGamerTo = createGamer("NewGamerB", gamerController);
 
-
-        final CreateMessageRequest createMessageRequest = new CreateMessageRequest("NewMessage",
-                returnedGamerFrom.getBody().getId(), returnedGamerTo.getBody().getId() );
-        final ResponseEntity<CreateMessageResponse> returnedMessage = messageController.createMessage(createMessageRequest);
+        final ResponseEntity<CreateMessageResponse> returnedMessage = createMessage(returnedGamerFrom, returnedGamerTo);
 
         final CreateMessageResponse body = returnedMessage.getBody();
         assertTrue(body.getSuccess());
 
         return returnedMessage;
+    }
+
+    private ResponseEntity<CreateMessageResponse> createMessage(ResponseEntity<CreateGamerResponse> returnedGamerFrom, ResponseEntity<CreateGamerResponse> returnedGamerTo) {
+        final CreateMessageRequest createMessageRequest = new CreateMessageRequest("NewMessage",
+                returnedGamerFrom.getBody().getId(), returnedGamerTo.getBody().getId() );
+        final ResponseEntity<CreateMessageResponse> returnedMessage = messageController.createMessage(createMessageRequest);
+        return returnedMessage;
+    }
+
+    private ResponseEntity<CreateGamerResponse> createGamer(String NewGamerA, GamerController gamerController) {
+        // we need to create to users to link the messages to
+        final CreateGamerRequest createGamerRequestFrom = new CreateGamerRequest(NewGamerA, new Date(1656366879731L)
+                ,"gamer@gamers.com", "019191999991911", null, "Hi Im a gamerA", "password");
+        final ResponseEntity<CreateGamerResponse> returnedGamerFrom = gamerController.createGamer(createGamerRequestFrom);
+        return returnedGamerFrom;
     }
 
     @Test
@@ -77,7 +88,7 @@ public class MessageControllerIT {
                 messageController.retrieveMessage(returnedMessage.getBody().getId());
 
         final UpdateMessageRequest updateMessageRequest = new UpdateMessageRequest(returnedMessage.getBody().getId(), "NewMessage",
-                retrieveMessageResponseResponseEntity.getBody().getFromUserId(), retrieveMessageResponseResponseEntity.getBody().getFromUserId());
+                retrieveMessageResponseResponseEntity.getBody().getFromGamerId(), retrieveMessageResponseResponseEntity.getBody().getFromGamerId());
 
         final ResponseEntity<UpdateMessageResponse> returnedUpdateMessage = messageController.updateMessage(updateMessageRequest);
 
@@ -158,4 +169,32 @@ public class MessageControllerIT {
 
         log.info("testArchiveMessageNotFound");
     }
+
+
+    @Test
+    public void testFindMessagesForGamer() {
+        log.info("testFindMessagesForGamer");
+
+        final ResponseEntity<CreateGamerResponse> returnedGamerFrom = createGamer("NewGamerA", gamerController);
+        final ResponseEntity<CreateGamerResponse> returnedGamerTo = createGamer("NewGamerB", gamerController);
+
+        final ResponseEntity<CreateMessageResponse> returnedMessage = createMessage(returnedGamerFrom, returnedGamerTo);
+
+        ResponseEntity<List<RetrieveMessageResponse>> foundMessages = messageController.findAllMessagesForGamer(returnedGamerFrom.getBody().getId());
+
+        assertNotNull(foundMessages);
+        assertNotNull(foundMessages.getBody());
+        assertTrue(foundMessages.getBody().size() == 1);
+
+        ResponseEntity<List<RetrieveMessageResponse>> foundMessagesTo = messageController.findAllMessagesForGamer(returnedGamerTo.getBody().getId());
+
+        assertNotNull(foundMessagesTo);
+        assertNotNull(foundMessagesTo.getBody());
+        assertTrue(foundMessagesTo.getBody().size() == 1);
+
+        assertEquals(foundMessages.getBody().get(0).getId() , foundMessagesTo.getBody().get(0).getId());
+
+        log.info("testFindMessagesForGamer {}", returnedMessage);
+    }
+
 }

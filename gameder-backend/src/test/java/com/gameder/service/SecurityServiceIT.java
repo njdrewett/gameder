@@ -133,7 +133,7 @@ public class SecurityServiceIT {
 
         final String encryptedPassword = passwordEncoder.encode("password");
         final Gamer gamer = new Gamer(null,"NewGamer", new Date(1656366879731L),
-                "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", encryptedPassword);
+                "gamer@gamers.com", "019191999991911", null, "jpg", "Hi Im a gamer", encryptedPassword);
 
         final Gamer returnedGamer = gamerService.createGamer(gamer);
 

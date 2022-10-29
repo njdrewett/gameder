@@ -1,20 +1,25 @@
 import ChatHeader from "./ChatHeader";
 import ChatDisplay from "./ChatDisplay";
 import MatchesDisplay from "./MatchesDisplay";
+import { useState } from "react";
 
-const ChatContainer = ( { gamer , matchedGame }) => {
+const ChatContainer = ( { gamer , matchedGames }) => {
+
+    const [clickedGame, setClickedGame] = useState(null)
+
+    console.log("clikced game " , clickedGame)
     return (
             <div className="chat-container">
                 <ChatHeader gamer={gamer} />
 
                 <div>
-                    <button className="option">Matches</button>
-                    <button className="option">Chat</button>
+                    <button className="option" onClick={() => setClickedGame(null)}>Matches</button>
+                    <button className="option" disabled={!clickedGame} >Chat</button>
 
                 </div>
-                <MatchesDisplay matchedGame={matchedGame}/>
+                {!clickedGame && <MatchesDisplay matchedGames={matchedGames} setClickedGame={setClickedGame} />}
 
-                <ChatDisplay />
+                {clickedGame  && <ChatDisplay />}
             </div>
     )
 }

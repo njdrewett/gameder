@@ -11,4 +11,5 @@ public interface GamerRepositoryCustom  {
 
     List<GamerEntity> findByCriteria(final GamerCriteria gamerCriteria);
 
+    GamerEntity findByReference(final String id);
 }
