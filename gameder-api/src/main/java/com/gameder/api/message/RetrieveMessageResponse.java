@@ -9,16 +9,16 @@ public class RetrieveMessageResponse {
     private String messageText;
     private Date creationDate;
     private Date lastUpdatedDate;
-    private String fromUserId;
-    private String toUserId;
+    private String fromGamerId;
+    private String toGamerId;
 
-    public RetrieveMessageResponse(String id, String messageText, Date creationDate, Date lastUpdatedDate, String fromUserId, String toUserId) {
+    public RetrieveMessageResponse(String id, String messageText, Date creationDate, Date lastUpdatedDate, String fromGamerId, String toGamerId) {
         this.id = id;
         this.messageText = messageText;
         this.creationDate = creationDate;
         this.lastUpdatedDate = lastUpdatedDate;
-        this.fromUserId = fromUserId;
-        this.toUserId = toUserId;
+        this.fromGamerId = fromGamerId;
+        this.toGamerId = toGamerId;
     }
 
     @Override
@@ -27,30 +27,30 @@ public class RetrieveMessageResponse {
         if (o == null || getClass() != o.getClass()) return false;
         RetrieveMessageResponse that = (RetrieveMessageResponse) o;
         return id.equals(that.id) && messageText.equals(that.messageText) && creationDate.equals(that.creationDate)
-                && lastUpdatedDate.equals(that.lastUpdatedDate) && fromUserId.equals(that.fromUserId)
-                && toUserId.equals(that.toUserId);
+                && lastUpdatedDate.equals(that.lastUpdatedDate) && fromGamerId.equals(that.fromGamerId)
+                && toGamerId.equals(that.toGamerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, messageText, creationDate, lastUpdatedDate, fromUserId, toUserId);
+        return Objects.hash(id, messageText, creationDate, lastUpdatedDate, fromGamerId, toGamerId);
     }
 
 
-    public String getFromUserId() {
-        return fromUserId;
+    public String getFromGamerId() {
+        return fromGamerId;
     }
 
-    public void setFromUserId(String fromUserId) {
-        this.fromUserId = fromUserId;
+    public void setFromGamerId(String fromGamerId) {
+        this.fromGamerId = fromGamerId;
     }
 
-    public String getToUserId() {
-        return toUserId;
+    public String getToGamerId() {
+        return toGamerId;
     }
 
-    public void setToUserId(String toUserId) {
-        this.toUserId = toUserId;
+    public void setToGamerId(String toGamerId) {
+        this.toGamerId = toGamerId;
     }
 
     public Date getLastUpdatedDate() {

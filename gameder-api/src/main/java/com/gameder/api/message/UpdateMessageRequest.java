@@ -1,39 +1,38 @@
 package com.gameder.api.message;
 
-import java.util.Date;
 import java.util.Objects;
 
 public class UpdateMessageRequest {
 
     private String id;
     private String messageText;
-    private String fromUserId;
-    private String toUserId;
+    private String fromGamerId;
+    private String toGamerId;
 
     public UpdateMessageRequest() {
     }
 
-    public UpdateMessageRequest(final String id, final String messageText, final String fromUserId, final String toUserId) {
+    public UpdateMessageRequest(final String id, final String messageText, final String fromGamerId, final String toGamerId) {
         this.id = id;
         this.messageText = messageText;
-        this.fromUserId = fromUserId;
-        this.toUserId = toUserId;
+        this.fromGamerId = fromGamerId;
+        this.toGamerId = toGamerId;
     }
 
-    public String getFromUserId() {
-        return fromUserId;
+    public String getFromGamerId() {
+        return fromGamerId;
     }
 
-    public void setFromUserId(String fromUserId) {
-        this.fromUserId = fromUserId;
+    public void setFromGamerId(String fromGamerId) {
+        this.fromGamerId = fromGamerId;
     }
 
-    public String getToUserId() {
-        return toUserId;
+    public String getToGamerId() {
+        return toGamerId;
     }
 
-    public void setToUserId(String toUserId) {
-        this.toUserId = toUserId;
+    public void setToGamerId(String toGamerId) {
+        this.toGamerId = toGamerId;
     }
 
     @Override
@@ -41,12 +40,12 @@ public class UpdateMessageRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UpdateMessageRequest that = (UpdateMessageRequest) o;
-        return id.equals(that.id) && messageText.equals(that.messageText) && fromUserId.equals(that.fromUserId) && toUserId.equals(that.toUserId);
+        return id.equals(that.id) && messageText.equals(that.messageText) && fromGamerId.equals(that.fromGamerId) && toGamerId.equals(that.toGamerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, messageText, fromUserId, toUserId);
+        return Objects.hash(id, messageText, fromGamerId, toGamerId);
     }
 
     public String getId() {
@@ -65,5 +64,13 @@ public class UpdateMessageRequest {
         this.messageText = messageText;
     }
 
-
+    @Override
+    public String toString() {
+        return "UpdateMessageRequest{" +
+                "id='" + id + '\'' +
+                ", messageText='" + messageText + '\'' +
+                ", fromGamerId='" + fromGamerId + '\'' +
+                ", toGamerId='" + toGamerId + '\'' +
+                '}';
+    }
 }
