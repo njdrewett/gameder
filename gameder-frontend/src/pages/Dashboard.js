@@ -18,8 +18,8 @@ import amongus from '../images/game-covers/amongus.jpg'
 const Dashboard = () => {
 
     const [gamer, setGamer] = useState(null)
-    const [error, setError] = useState(null)
-    const [cookies, setCookie, removeCookie] = useCookies(null)
+    const [setError] = useState(null)
+    const [cookies] = useCookies(null)
     const [matchedGames, setMatchedGames] = useState([])
 
 
@@ -91,9 +91,7 @@ const Dashboard = () => {
 
 
     const updateGameMatches = (swipedGame) => {
-        console.log("updating game match" )
         setMatchedGames(matchedGames => [...matchedGames,swipedGame])
-        console.log('Matched game ' + swipedGame?.name)
     }
 
     const swiped = (direction, swipedGame) => {
@@ -104,7 +102,6 @@ const Dashboard = () => {
     }
 
     const outOfFrame = (name) => {
-        console.log(name + ' left the screen!')
     }
 
     return (

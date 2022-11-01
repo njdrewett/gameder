@@ -7,7 +7,6 @@ const ChatContainer = ( { gamer , matchedGames }) => {
 
     const [clickedGame, setClickedGame] = useState(null)
 
-    console.log("clikced game " , clickedGame)
     return (
             <div className="chat-container">
                 <ChatHeader gamer={gamer} />
@@ -19,7 +18,7 @@ const ChatContainer = ( { gamer , matchedGames }) => {
                 </div>
                 {!clickedGame && <MatchesDisplay matchedGames={matchedGames} setClickedGame={setClickedGame} />}
 
-                {clickedGame  && <ChatDisplay />}
+                {clickedGame  && <ChatDisplay gamer={gamer} clickedGame={clickedGame}/>}
             </div>
     )
 }

@@ -65,7 +65,7 @@ public class MessageControllerImpl implements MessageController {
 
     @Override
     @GetMapping(path="/findByGamer/{gamerId}")
-    public ResponseEntity<List<RetrieveMessageResponse>> findAllMessagesForGamer(final String gamerId) {
+    public ResponseEntity<List<RetrieveMessageResponse>> findAllMessagesForGamer(@PathVariable("gamerId") final String gamerId) {
         log.info("findAllMessagesForGamer {}", gamerId);
 
         final List<Message> messages = messageService.findMessagesForGamer(gamerId);

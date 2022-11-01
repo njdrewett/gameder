@@ -38,8 +38,6 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
                 setError("Passwords need to match");
             }
 
-            console.log("email: " + email + ", password: " + password + ", confirm password: " + password);
-
             const emailLower = email.toLowerCase()
             const passwordHashed = hashSync(password,10)
             const signup = "http://localhost:8080/api/auth/signup";
@@ -54,9 +52,7 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
             })
                 .then(res => res.json())
                 .then(res => {
-                    console.log(res)
                     if(res.signupSuccessful) {
-                        console.log("signup success")
                         setUserId(res.userId)
                         setJwToken(res.jwToken)
                         setCookie("userId",res.userId)
@@ -68,13 +64,9 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
                     }
                 })
                 .catch(console.log);
-
-            console.log("Post request for signup");
         }
 
         function performLogin() {
-
-            console.log("email: " + email + ", password: " + password );
 
             const emailLower = email.toLowerCase()
  
@@ -90,7 +82,6 @@ const AuthModal = ({ setShowAuthModal, isSignUp }) => {
             })
                 .then(res => res.json())
                 .then(res => {
-                    console.log(res)
                     if(res.loginSuccessful) {
                         console.log("login success")
                         setUserId(res.userId)

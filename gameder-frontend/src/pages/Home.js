@@ -1,18 +1,32 @@
 import Nav from "../components/Nav"
 import { useState } from 'react'
+import { useCookies } from 'react-cookie'
 import AuthModal from "../components/AuthModal";
 
 const Home = () => {
 
-    const authToken = false;
 
     const [showAuthModal, setShowAuthModal] = useState(false)
     const [isSignUp, setIsSignUp] = useState(true)
+    const [cookies,setCookie,removeCookie] = useCookies()
+ 
+    const authToken = cookies.jwToken
+    const BACKEND_URI_API = process.env.BACKEND_URI_API
 
+    console.log("backend : ", BACKEND_URI_API)
+ 
     const handleHomeClick = () => {
-        console.log('home clicked')
+        if(authToken !== undefined) {
+            console.log("Removing")
+            removeCookie("userId")
+            removeCookie("emailAddress")
+            removeCookie("jwToken")
+            window.location.reload()   
+            return      
+    
+        }
         setShowAuthModal(true)
-        setIsSignUp(true)
+        setIsSignUp(true)        
     }
 
     return (
@@ -27,7 +41,7 @@ const Home = () => {
         <div className="home">
             <h1 className="main-title">Game Right</h1>
             <button className="home-button" onClick={handleHomeClick}>
-                {authToken ? 'Signout' : 'Sign Up'}
+                { authToken ? 'Signout' : 'Sign Up'}
             </button>
          </div>
          {showAuthModal && (

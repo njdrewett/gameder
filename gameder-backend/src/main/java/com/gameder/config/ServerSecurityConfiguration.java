@@ -65,6 +65,8 @@ public class ServerSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/gamer/**").access("hasAuthority('gamer')")
+                .antMatchers("/api/message/**").access("hasAuthority('gamer')")
+                .antMatchers("/api/game/**").access("hasAuthority('gamer')")
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
