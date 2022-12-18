@@ -8,11 +8,22 @@ services:
       POSTGRES_PASSWORD: password
       PGDATA: /data/gameder
     volumes:
-      - postgres:/data/gameder
+      - gameder-postgres:/data/gameder
     ports:
       - "5432:5432"
-    networks:
-      - gameder
+    restart: unless-stopped
+
+  keycloak-postgres:
+    container_name: keycloak-postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+      PGDATA: /data/keycloak
+    volumes:
+      - keycloak-postgres:/data/keycloak
+    ports:
+      - "5433:5432"
     restart: unless-stopped
 
   gameder-pgadmin:
@@ -26,38 +37,32 @@ services:
       - pgadmin:/var/lib/pgadmin
     ports:
       - "5050:80"
-    networks:
-      - gameder
     restart: unless-stopped
 
-#  keycloak:
-#    container_name: gameder-keycloak
-#    image: quay.io/keycloak/keycloak:legacy
-#    environment:
-#      DB_VENDOR: POSTGRES
-#      DB_ADDR: gameder-postgres
-#      DB_DATABASE: gameder
-#      DB_USER: gameder
-#      DB_SCHEMA: public
-#      DB_PASSWORD: password
-#      KEYCLOAK_USER: admin
-#      KEYCLOAK_PASSWORD: Pa55w0rd
-#      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
-#      #JDBC_PARAMS: "ssl=true"
-#    networks:
-#      - gameder
-#    ports:
-#      - 9990:9990
-#      - 8080:8080
-#      - 8180:8080
-#      - 8443:8443
-#    depends_on:
-#      - gameder-postgres
-
-networks:
-  gameder:
-    driver: bridge
+  keycloak:
+    container_name: gameder-keycloak
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: keycloak-postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+      JDBC_PARAMS: "ssl=true"
+    command: "start-dev"
+    ports:
+      - 8180:8080
+      - 8443:8443
+    depends_on:
+      - keycloak-postgres
 
 volumes:
-  postgres:
+  gameder-postgres:
+  keycloak-postgres:
   pgadmin:

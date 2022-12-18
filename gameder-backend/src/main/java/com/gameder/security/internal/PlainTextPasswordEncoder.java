@@ -1,4 +1,4 @@
-package com.gameder.config;
+package com.gameder.security.internal;
 
 
 import org.springframework.security.crypto.password.PasswordEncoder;

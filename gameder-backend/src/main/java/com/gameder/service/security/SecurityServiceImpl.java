@@ -33,8 +33,14 @@ public class SecurityServiceImpl extends SecurityServiceBase {
                                final AuthenticationManager authenticationManager,
                                final JwtUtils jwtUtils,
                                final GamerService gamerService,
-                               final PasswordEncoder encoder) {
-        super(gamerRepository, authenticationManager,jwtUtils,gamerService,encoder);
+                               final PasswordEncoder encoder
+                               ) {
+        super(gamerRepository,
+                authenticationManager,
+                jwtUtils,
+                gamerService,
+                encoder
+        );
     }
 
     @Override

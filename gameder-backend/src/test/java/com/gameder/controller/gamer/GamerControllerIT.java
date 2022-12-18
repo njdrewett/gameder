@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Perform Gamer unit Test
  */
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
 public class GamerControllerIT {
@@ -41,6 +41,7 @@ public class GamerControllerIT {
         log.info("testCreateGamer");
 
         final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
+        assertNotNull(returnedGamer.getBody());
         assertNotNull(returnedGamer.getBody().getId());
         assertTrue(returnedGamer.getBody().getSuccess());
 
@@ -57,6 +58,8 @@ public class GamerControllerIT {
 
         final ResponseEntity<CreateGamerResponse> returnedGamer = gamerController.createGamer(minimalGamer);
 
+        assertNotNull(returnedGamer.getBody());
+
         assertNotNull(returnedGamer.getBody().getId());
         assertTrue(returnedGamer.getBody().getSuccess());
 
@@ -70,6 +73,8 @@ public class GamerControllerIT {
         final ResponseEntity<CreateGamerResponse> returnedGamer = gamerController.createGamer(createGamerRequest);
 
         final CreateGamerResponse body = returnedGamer.getBody();
+        assertNotNull(body);
+
         assertTrue(body.getSuccess());
         return returnedGamer;
     }
@@ -87,12 +92,16 @@ public class GamerControllerIT {
         );
 
         final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
+        assertNotNull(returnedGamer.getBody());
+
         final UpdateGamerRequest updateGamerRequest =
                 new UpdateGamerRequest(returnedGamer.getBody().getId(), "NewGamer", new Date(1656366879731L),
                         "gamer@gamers.com", "019191999991911", null, "Hi Im a gamer", "password");
         final ResponseEntity<UpdateGamerResponse> returnedUpdateGamer = gamerController.updateGamer(updateGamerRequest, file);
 
         final UpdateGamerResponse body = returnedUpdateGamer.getBody();
+        assertNotNull(body);
+
         assertTrue(body.getSuccess());
         assertEquals(body.getId(), returnedGamer.getBody().getId());
 
@@ -129,8 +138,10 @@ public class GamerControllerIT {
 
         final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
 
+        assertNotNull(returnedGamer.getBody());
         final ResponseEntity<RetrieveGamerResponse> getGamerResponse = gamerController.retrieveGamer(returnedGamer.getBody().getId());
 
+        assertNotNull(getGamerResponse.getBody());
         assertNotNull(getGamerResponse.getBody().getId());
 
         log.info("testRetrieveGamer {}", getGamerResponse);
@@ -171,6 +182,8 @@ public class GamerControllerIT {
 
         final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
 
+        assertNotNull(returnedGamer.getBody());
+
         gamerController.archiveGamer(returnedGamer.getBody().getId());
 
         log.info("testArchiveGamer");
@@ -201,7 +214,7 @@ public class GamerControllerIT {
         final ResponseEntity<Boolean> result = gamerController.emailExists("gamer@gamers.com");
 
         final Boolean body = result.getBody();
-        assertTrue(body);
+        assertEquals(true, body);
 
         log.info("testEmailExists");
     }
@@ -212,13 +225,16 @@ public class GamerControllerIT {
 
         final ResponseEntity<CreateGamerResponse> returnedGamer = createGamer();
 
+
         FindGamerRequest gamerCriteria = new FindGamerRequest();
+        assertNotNull(returnedGamer.getBody());
         gamerCriteria.setId(returnedGamer.getBody().getId());
 
         final ResponseEntity<List<RetrieveGamerResponse>> results = gamerController.findGamer(gamerCriteria);
 
         assertNotNull(results);
         assertEquals(HttpStatus.OK, results.getStatusCode());
+        assertNotNull(results.getBody());
         assertEquals(results.getBody().get(0).getId(), returnedGamer.getBody().getId());
 
         log.info("Exitting testFindById ");
@@ -233,12 +249,17 @@ public class GamerControllerIT {
         final ResponseEntity<CreateGamerResponse> excludeGamer = createGamer();
 
         FindGamerRequest gamerCriteria = new FindGamerRequest();
+
+        assertNotNull(excludeGamer.getBody());
         gamerCriteria.setExcludeId(excludeGamer.getBody().getId());
 
         final ResponseEntity<List<RetrieveGamerResponse>> results = gamerController.findGamer(gamerCriteria);
 
         assertNotNull(results);
         assertEquals(HttpStatus.OK, results.getStatusCode());
+        assertNotNull(results.getBody());
+        assertNotNull(returnedGamer.getBody());
+        assertNotNull(excludeGamer.getBody());
         assertEquals(results.getBody().get(0).getId(), returnedGamer.getBody().getId());
         assertNotEquals(results.getBody().get(0).getId(), excludeGamer.getBody().getId());
 

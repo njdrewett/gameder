@@ -61,7 +61,10 @@ public class SecurityServiceTest {
    @BeforeEach
    void setup() {
       log.info("setup");
-      securityService = new SecurityServiceImpl(gamerRepository, authenticationManager, jwtUtils, gamerService, encoder);
+      securityService = new SecurityServiceImpl(gamerRepository,
+              authenticationManager,
+              jwtUtils, gamerService,encoder
+              );
    }
 
    @Test

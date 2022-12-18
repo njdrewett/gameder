@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Perform Game unit Test
  */
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
 public class GameControllerIT {
@@ -36,6 +36,7 @@ public class GameControllerIT {
         log.info("testCreateGame");
 
         final ResponseEntity<CreateGameResponse> returnedGame = createGame();
+        assertNotNull(returnedGame.getBody());
         assertNotNull(returnedGame.getBody().getId());
         assertTrue(returnedGame.getBody().getSuccess());
 
@@ -49,6 +50,7 @@ public class GameControllerIT {
         final ResponseEntity<CreateGameResponse> returnedGame = gameController.createGame(createGameRequest);
 
         final CreateGameResponse body = returnedGame.getBody();
+        assertNotNull(body);
         assertTrue(body.getSuccess());
         return returnedGame;
     }
@@ -58,12 +60,14 @@ public class GameControllerIT {
         log.info("testUpdateGame");
 
         final ResponseEntity<CreateGameResponse> returnedGame = createGame();
+        assertNotNull(returnedGame.getBody());
         final UpdateGameRequest updateGameRequest =
                 new UpdateGameRequest(returnedGame.getBody().getId(),"NewGameDisplayNameUpdated",
                         "This is an updated Game", null, 12);
         final ResponseEntity<UpdateGameResponse> returnedUpdateGame = gameController.updateGame(updateGameRequest);
 
         final UpdateGameResponse body = returnedUpdateGame.getBody();
+        assertNotNull(body);
         assertTrue(body.getSuccess());
         assertEquals(body.getId(), returnedGame.getBody().getId());
 
@@ -92,8 +96,11 @@ public class GameControllerIT {
 
         final ResponseEntity<CreateGameResponse> returnedGame = createGame();
 
+        assertNotNull(returnedGame.getBody());
+
         final ResponseEntity<RetrieveGameResponse> getGameResponse = gameController.retrieveGame(returnedGame.getBody().getId());
 
+        assertNotNull(getGameResponse.getBody());
         assertNotNull(getGameResponse.getBody().getId());
 
         log.info("testRetrieveGame {}", returnedGame);
@@ -133,6 +140,8 @@ public class GameControllerIT {
         log.info("testArchiveGame");
 
         final ResponseEntity<CreateGameResponse> returnedGame = createGame();
+
+        assertNotNull(returnedGame.getBody());
 
         gameController.archiveGame(returnedGame.getBody().getId());
 

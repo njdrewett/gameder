@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class GameServiceIT {
@@ -115,7 +115,7 @@ public class GameServiceIT {
         log.info("Games all: " + returnedGame);
 
         assertNotNull(returnedGame);
-        assertTrue(returnedGame.size() == 1);
+        assertEquals(returnedGame.size(), 1);
 
         log.info("testRetrieveGamer {}", returnedGame);
     }

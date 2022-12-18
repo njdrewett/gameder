@@ -11,5 +11,9 @@
         <module name="gameder-api" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gameder" target="17" />
+      <module name="gameder-frontend" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

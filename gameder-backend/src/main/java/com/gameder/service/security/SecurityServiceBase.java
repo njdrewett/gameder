@@ -24,7 +24,8 @@ public abstract class SecurityServiceBase implements SecurityService {
                         final AuthenticationManager authenticationManager,
                         final JwtUtils jwtUtils,
                         final GamerService gamerService,
-                        final PasswordEncoder encoder) {
+                        final PasswordEncoder encoder
+    ) {
         this.gamerRepository = gamerRepository;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
